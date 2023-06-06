@@ -49,6 +49,14 @@ public class UserDaoInMemoryImpl implements UserDao {
         users.remove(userId);
     }
 
+    @Override
+    public User updateUser(User user) {
+        validateUserById(user.getId());
+        users.put(user.getId(), user);
+        log.info("Обновили пользователя с id = {}", user.getId());
+        return user;
+    }
+
     private Long generateId() {
         return ++id;
     }
