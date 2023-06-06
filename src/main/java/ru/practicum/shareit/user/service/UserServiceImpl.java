@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exception.model.EmailDoesNotExistException;
+import ru.practicum.shareit.exception.model.ObjectNotFoundException;
 import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
@@ -29,7 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Long userId) {
-        log.info("Нашли пользователя по id = {}", userId);
         return UserMapper.toUserDto(userRepository.findUserById(userId));
     }
 
@@ -66,7 +66,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long userDtoId) {
-        log.info("Удалили пользователя id = {}", userDtoId);
         userRepository.deleteUserById(userDtoId);
     }
 

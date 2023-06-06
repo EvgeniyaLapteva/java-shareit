@@ -2,9 +2,7 @@ package ru.practicum.shareit.user.dao.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.practicum.shareit.exception.model.EmailDoesNotExistException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
-import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dao.UserDao;
 
@@ -29,12 +27,12 @@ public class UserDaoInMemoryImpl implements UserDao {
     @Override
     public User findUserById(Long userId) {
         validateUserById(userId);
+        log.info("Нашли пользователя по id = {}", userId);
         return users.get(userId);
     }
 
     @Override
     public User createUser(User user) {
-        //validateUser(user);
         user.setId(generateId());
         users.put(user.getId(), user);
         return user;
@@ -43,6 +41,7 @@ public class UserDaoInMemoryImpl implements UserDao {
     @Override
     public void deleteUserById(Long userId) {
         validateUserById(userId);
+        log.info("Удалили пользователя id = {}", userId);
         users.remove(userId);
     }
 
@@ -55,20 +54,6 @@ public class UserDaoInMemoryImpl implements UserDao {
     private Long generateId() {
         return ++id;
     }
-
-//    private void validateUser(User user) {
-//        if (user.getEmail() == null || !user.getEmail().contains("@")) {
-//            log.error("email равен null или указан неверный формат");
-//            throw new EmailDoesNotExistException("email равен null или указан неверный формат");
-//        }
-//        List<User> usersFromMemory = getAllUsers();
-//        for (User userFM : usersFromMemory) {
-//            if (user.getEmail().equals(userFM.getEmail())) {
-//                log.error("Пользователь с email = {} уже существует", user.getEmail());
-//                throw new ValidationException("Пользователь с email = " + user.getEmail() + "уже существует");
-//            }
-//        }
-//    }
 
     private void validateUserById(Long userId) {
         if (!users.containsKey(userId)) {
