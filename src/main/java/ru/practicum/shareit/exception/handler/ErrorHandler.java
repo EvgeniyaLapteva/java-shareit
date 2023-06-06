@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.shareit.exception.model.EmailDoesNotExistException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
 import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.exception.response.ErrorResponse;
@@ -19,6 +20,12 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleEmailDoesNotExistException(final EmailDoesNotExistException e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleValidationException(final ValidationException e) {
         return new ErrorResponse("error", e.getMessage());
     }
