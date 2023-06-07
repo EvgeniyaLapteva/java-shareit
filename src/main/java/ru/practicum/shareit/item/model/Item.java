@@ -16,11 +16,8 @@ import javax.validation.constraints.NotNull;
 public class Item {
 
     private Long id;
-    @NotBlank
     private String name;
-    @NotBlank
     private String description;
-    @NotNull
     private boolean available;
     private User owner;
     private ItemRequest request;
