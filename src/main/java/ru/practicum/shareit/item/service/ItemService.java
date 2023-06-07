@@ -15,6 +15,6 @@ public interface ItemService {
     List<ItemDto> getItemDtoByUserId(Long userId);
 
     List<ItemDto> getItemsDtoByTextRequest(String text);
-    
+
     void deleteItemDto(Long userId, Long itemId);
 }
