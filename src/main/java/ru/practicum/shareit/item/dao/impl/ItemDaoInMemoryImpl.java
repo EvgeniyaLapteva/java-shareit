@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ItemDaoInMemoryImpl implements ItemDao {
 
-    private final Map<Long, Item> items = new HashMap<>();
     private final Map<Long, List<Item>> usersItems = new HashMap<>();
     private Long id = 0L;
     @Override
@@ -23,8 +22,6 @@ public class ItemDaoInMemoryImpl implements ItemDao {
         User owner = User.builder().id(userId).build();
         item.setOwner(owner);
         usersItems.computeIfAbsent(userId, userItems -> new ArrayList<>()).add(item);
-//        items.put(item.getId(), item);
-//        usersItems.computeIfAbsent(userId, i -> new ArrayList<>()).add(item);
         log.info("Добавлена вещь {}", item);
         return item;
     }
@@ -35,19 +32,12 @@ public class ItemDaoInMemoryImpl implements ItemDao {
         usersItems.computeIfPresent(userId, (key, value) -> value.stream()
                 .map(itemOfUser -> Objects.equals(itemOfUser.getId(), item.getId()) ? item : itemOfUser)
                 .collect(Collectors.toList()));
-//        items.put(item.getId(), item);
         log.info("Обновлена вещь {}", item);
         return item;
     }
 
     @Override
     public Item getItemById(Long itemId) {
-//        if (!items.containsKey(itemId)) {
-//            log.error("Не найдена вещь с id = {}", itemId);
-//            throw new ObjectNotFoundException("Не найдена вещь с id = " + itemId);
-//        }
-//        log.info("Найдена вещь с id = {}", itemId);
-//        return items.get(itemId);
         Item item = usersItems.values().stream()
                 .flatMap(Collection::stream)
                 .filter(i -> Objects.equals(i.getId(), itemId))
@@ -68,14 +58,15 @@ public class ItemDaoInMemoryImpl implements ItemDao {
 
     @Override
     public List<Item> getItemsByTextRequest(String textRequest) {
+        if (textRequest.equals("")) {
+            return Collections.emptyList();
+        }
+        String textToLowerCase = textRequest.toLowerCase();
         log.info("Получили список вещей по текстовому запросу {}", textRequest);
-//        return items.values().stream()
-//                .filter(item -> item.isAvailable() && (item.getName().toLowerCase().contains(textRequest))
-//                || item.getDescription().toLowerCase().contains(textRequest)).collect(Collectors.toList());
         return usersItems.values().stream()
                 .flatMap(Collection::stream)
-                .filter(item -> item.isAvailable() && (item.getName().toLowerCase().contains(textRequest))
-                || item.getDescription().toLowerCase().contains(textRequest)).collect(Collectors.toList());
+                .filter(item -> item.isAvailable() && ((item.getName().toLowerCase().contains(textToLowerCase))
+                || item.getDescription().toLowerCase().contains(textToLowerCase))).collect(Collectors.toList());
     }
 
     @Override
