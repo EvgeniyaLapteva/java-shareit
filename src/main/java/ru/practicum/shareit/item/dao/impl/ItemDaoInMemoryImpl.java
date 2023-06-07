@@ -16,6 +16,7 @@ public class ItemDaoInMemoryImpl implements ItemDao {
 
     private final Map<Long, List<Item>> usersItems = new HashMap<>();
     private Long id = 0L;
+
     @Override
     public Item createItem(Long userId, Item item) {
         item.setId(generateId());

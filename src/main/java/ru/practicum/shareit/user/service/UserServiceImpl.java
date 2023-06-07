@@ -19,11 +19,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserDao userRepository;
+
     @Override
     public List<UserDto> getAllUsers() {
         log.info("Получили список всех пользователей");
         return userRepository.getAllUsers()
-                .stream().map(UserMapper :: toUserDto)
+                .stream().map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
