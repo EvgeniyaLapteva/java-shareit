@@ -87,7 +87,7 @@ public class ItemServiceImpl implements ItemService {
         Long ownerId = item.getOwner().getId();
         if (!Objects.equals(userId, ownerId)) {
             log.error("Вещь id = {} не принадлежит пользователю id = {}", itemId, userId);
-            throw new ObjectNotFoundException("Вещь id = " + itemId + "не принадлежит пользователю id = " + userId);
+            throw new ObjectNotFoundException("Вещь id = " + itemId + " не принадлежит пользователю id = " + userId);
         }
         return item;
     }
