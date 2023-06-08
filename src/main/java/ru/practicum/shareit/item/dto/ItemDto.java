@@ -12,9 +12,9 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class ItemDto {
     private Long id;
-    @NotBlank
+    @NotBlank(message = "Поле name не должно быть пустым")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Поле description не должно быть пустым")
     private String description;
     private Boolean available;
     private Long request;

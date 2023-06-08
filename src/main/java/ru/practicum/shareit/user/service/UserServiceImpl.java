@@ -3,7 +3,6 @@ package ru.practicum.shareit.user.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.shareit.exception.model.EmailDoesNotExistException;
 import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
@@ -70,10 +69,6 @@ public class UserServiceImpl implements UserService {
     }
 
     private void validateUser(UserDto userDto) {
-        if (userDto.getEmail() == null || !userDto.getEmail().contains("@")) {
-            log.error("email равен null или указан неверный формат");
-            throw new EmailDoesNotExistException("email равен null или указан неверный формат");
-        }
         List<UserDto> usersFromMemory = getAllUsers();
         for (UserDto userFM : usersFromMemory) {
             if (userDto.getEmail().equals(userFM.getEmail())) {

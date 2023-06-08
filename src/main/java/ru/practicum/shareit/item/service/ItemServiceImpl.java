@@ -31,14 +31,6 @@ public class ItemServiceImpl implements ItemService {
             log.error("Поле available должно быть указано");
             throw new FieldsAreNotSpecifiedException("Поле available должно быть указано");
         }
-        if (itemDto.getName() == null || itemDto.getName().isBlank()) {
-            log.error("Поле name не должно быть пустым");
-            throw new FieldsAreNotSpecifiedException("Поле name не должно быть пустым");
-        }
-        if (itemDto.getDescription() == null || itemDto.getDescription().isBlank()) {
-            log.error("Поле name не должно быть пустым");
-            throw new FieldsAreNotSpecifiedException("Поле description не должно быть пустым");
-        }
         return ItemMapper.toItemDto(itemRepository.createItem(userId, ItemMapper.toItem(itemDto)));
     }
 
@@ -87,7 +79,6 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItemDto(Long userId, Long itemId) {
         validateUser(userId, itemId);
         itemRepository.delete(userId,itemId);
-
     }
 
     private Item validateUser(Long userId, Long itemId) {
