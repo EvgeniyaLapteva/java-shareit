@@ -3,6 +3,7 @@ package ru.practicum.shareit.exception.handler;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.model.FieldsAreNotSpecifiedException;
@@ -11,6 +12,8 @@ import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.exception.response.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class ErrorHandler {
@@ -39,15 +42,23 @@ public class ErrorHandler {
         return new ErrorResponse("error", e.getMessage());
     }
 
-    @ExceptionHandler
+    @ResponseBody
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidationException(final MethodArgumentNotValidException e) {
-        return new ErrorResponse("error", e.getMessage());
+    public ErrorResponse handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+        final List<ErrorResponse> responses = e.getBindingResult().getFieldErrors().stream()
+                .map(error -> new ErrorResponse(error.getField(), error.getDefaultMessage()))
+                .collect(Collectors.toList());
+        return responses.get(0);
     }
 
-    @ExceptionHandler
+    @ResponseBody
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleConstraintViolationException(final ConstraintViolationException e) {
-        return new ErrorResponse("error", e.getMessage());
+    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
+        final List<ErrorResponse> responses = e.getConstraintViolations().stream()
+                .map(error -> new ErrorResponse(error.getPropertyPath().toString(), error.getMessage()))
+                .collect(Collectors.toList());
+        return responses.get(0);
     }
 }
