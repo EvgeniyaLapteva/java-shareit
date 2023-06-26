@@ -19,12 +19,13 @@ public class ItemMapper {
     public static Item toItem(ItemDto itemDto) {
         ItemRequest itemRequest = new ItemRequest();
         itemRequest.setId(itemDto.getRequest() != null ? itemDto.getRequest() : null);
-        return Item.builder()
-                .id(itemDto.getId())
-                .name(itemDto.getName())
-                .description(itemDto.getDescription())
-                .available(itemDto.getAvailable())
-                .request(itemRequest)
-                .build();
+
+        Item item = new Item();
+        item.setId(itemDto.getId());
+        item.setName(itemDto.getName());
+        item.setDescription(itemDto.getDescription());
+        item.setAvailable(itemDto.getAvailable());
+        item.setRequest(itemRequest);
+        return item;
     }
 }
