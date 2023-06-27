@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exception.model.FieldsAreNotSpecifiedException;
-import ru.practicum.shareit.exception.model.ObjectNotFoundException;
-import ru.practicum.shareit.exception.model.ValidationException;
+import ru.practicum.shareit.exception.model.*;
 import ru.practicum.shareit.exception.response.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
@@ -29,6 +27,17 @@ public class ErrorHandler {
     public ErrorResponse handleAvailableIsNullException(final FieldsAreNotSpecifiedException e) {
         return new ErrorResponse("error", e.getMessage());
     }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleItemNotFoundException(final ItemINotFoundException e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -39,6 +48,12 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleOtherException(final Throwable e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleValidateStateException(final ValidateStateException e) {
         return new ErrorResponse("error", e.getMessage());
     }
 
