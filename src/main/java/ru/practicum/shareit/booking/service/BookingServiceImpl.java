@@ -12,7 +12,7 @@ import ru.practicum.shareit.user.repository.UserRepository;
 @Transactional
 @Slf4j
 @RequiredArgsConstructor
-public class BookingServiceImpl {
+public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
     private final UserRepository userRepository;
