@@ -82,7 +82,7 @@ public class ItemServiceImpl implements ItemService {
             return Collections.emptyList();
         }
         log.info("Получили список вещей по текстовому запросу {}", text);
-        return itemRepository.searchByText(text.toLowerCase()).stream()
+        return itemRepository.searchByText(text.toUpperCase()).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
