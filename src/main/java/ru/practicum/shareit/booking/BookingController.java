@@ -38,13 +38,13 @@ public class BookingController {
     }
 
     @GetMapping
-    public List<BookingDto> findByBookingState(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingDto> findAllUsersBookingByState(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                @RequestParam(defaultValue = "ALL") String state) {
         return null;
     }
 
     @GetMapping("/owner")
-    public List<BookingDto> findBookingByOwnerAndState(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingDto> findAllBookingsForItemsOfUser(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                        @RequestParam(defaultValue = "ALL") String state) {
         return null;
     }
