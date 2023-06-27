@@ -35,7 +35,7 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleItemNotFoundException(final ItemINotFoundException e) {
+    public ErrorResponse handleBookingApproveException(final BookingApproveException e) {
         return new ErrorResponse("error", e.getMessage());
     }
 
