@@ -18,9 +18,9 @@ name VARCHAR(255) NOT NULL,
 description VARCHAR(512) NOT NULL,
 is_available BOOLEAN NOT NULL,
 owner_id BIGINT NOT NULL,
-request_id BIGINT NOT NULL,
+request_id BIGINT NULL,
 CONSTRAINT fk_item_of_user FOREIGN KEY (owner_id) REFERENCES users (id) ON DELETE CASCADE,
-CONSTRAINT fk_item_by_request FOREIGN KEY (request_id) REFERENCES requests (id) ON DELETE CASCADE
+CONSTRAINT fk_item_by_request FOREIGN KEY (request_id) REFERENCES requests (id)
 );
 
 CREATE TABLE IF NOT EXISTS bookings (
@@ -48,3 +48,7 @@ CONSTRAINT fk_comments_by_user FOREIGN KEY (author_id) REFERENCES users (id) ON 
 DELETE FROM USERS;
 
 ALTER TABLE USERS ALTER COLUMN id RESTART WITH 1;
+
+DELETE FROM ITEMS;
+
+ALTER TABLE ITEMS ALTER COLUMN id RESTART WITH 1;

@@ -4,16 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.shareit.exception.model.FieldsAreNotSpecifiedException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
 import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.item.ItemMapper;
-import ru.practicum.shareit.item.dao.impl.ItemDaoInMemoryImpl;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.user.User;
-import ru.practicum.shareit.user.dao.impl.UserDaoInMemoryImpl;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.Collections;
@@ -81,24 +78,26 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemDto> getItemsDtoByTextRequest(String text) {
-        if (text.equals("")) {
+        if (text.isBlank()) {
             return Collections.emptyList();
         }
-        String textToLowerCase = text.toLowerCase();
         log.info("Получили список вещей по текстовому запросу {}", text);
-        return itemRepository.searchByText(textToLowerCase).stream()
+        return itemRepository.searchByText(text.toLowerCase()).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
     @Override
     public void deleteItemDto(Long userId, Long itemId) {
         validateUser(userId, itemId);
-        itemRepository.delete(userId,itemId);
+        itemRepository.deleteById(itemId);
     }
 
     private Item validateUser(Long userId, Long itemId) {
-        userRepository.findUserById(userId);
-        Item item = itemRepository.getItemById(itemId);
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
+                        "с id = " + userId + " не найден"));
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ObjectNotFoundException("Вещь с id = " + itemId + "не найдена"));
         Long ownerId = item.getOwner().getId();
         if (!Objects.equals(userId, ownerId)) {
             log.error("Вещь id = {} не принадлежит пользователю id = {}", itemId, userId);

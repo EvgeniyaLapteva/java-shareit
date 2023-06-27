@@ -13,7 +13,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.isAvailable())
-                .request(item.getRequest().getId() != null ? item.getRequest().getId() : null)
+                .request(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
     }
 
