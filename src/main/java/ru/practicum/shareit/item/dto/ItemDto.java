@@ -2,8 +2,10 @@ package ru.practicum.shareit.item.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import ru.practicum.shareit.exception.validation.ValidationMarker;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * TODO Sprint add-controllers.
@@ -11,11 +13,16 @@ import javax.validation.constraints.NotBlank;
 @Data
 @Builder
 public class ItemDto {
+
     private Long id;
-    @NotBlank(message = "Поле name не должно быть пустым")
+
+    @NotBlank(groups = ValidationMarker.OnCreate.class, message = "Поле name не должно быть пустым")
     private String name;
-    @NotBlank(message = "Поле description не должно быть пустым")
+
+    @NotBlank(groups = ValidationMarker.OnCreate.class, message = "Поле description не должно быть пустым")
     private String description;
+
+    @NotNull(groups = ValidationMarker.OnCreate.class, message = "Поле available не должно быть пустым")
     private Boolean available;
     private Long request;
 }

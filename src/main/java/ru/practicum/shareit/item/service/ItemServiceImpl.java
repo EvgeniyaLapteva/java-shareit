@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.exception.model.FieldsAreNotSpecifiedException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
 import ru.practicum.shareit.exception.model.ValidationException;
@@ -10,8 +11,12 @@ import ru.practicum.shareit.item.ItemMapper;
 import ru.practicum.shareit.item.dao.impl.ItemDaoInMemoryImpl;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
+import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.dao.impl.UserDaoInMemoryImpl;
+import ru.practicum.shareit.user.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -19,19 +24,20 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemDaoInMemoryImpl itemRepository;
-    private final UserDaoInMemoryImpl userRepository;
+    private final ItemRepository itemRepository;
+    private final UserRepository userRepository;
 
     @Override
     public ItemDto createItemDto(Long userId, ItemDto itemDto) {
-        userRepository.findUserById(userId);
-        if (itemDto.getAvailable() == null) {
-            log.error("Поле available должно быть указано");
-            throw new FieldsAreNotSpecifiedException("Поле available должно быть указано");
-        }
-        return ItemMapper.toItemDto(itemRepository.createItem(userId, ItemMapper.toItem(itemDto)));
+        User owner = userRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
+                        "с id = " + userId + " не найден"));
+        Item item = ItemMapper.toItem(itemDto, owner);
+        item = itemRepository.save(item);
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
@@ -54,24 +60,33 @@ public class ItemServiceImpl implements ItemService {
         if (itemDto.getAvailable() != null) {
             item.setAvailable(itemDto.getAvailable());
         }
-        return ItemMapper.toItemDto(itemRepository.updateItem(item));
+        return ItemMapper.toItemDto(itemRepository.save(item));
     }
 
     @Override
     public ItemDto getItemDtoById(Long itemId) {
-        return ItemMapper.toItemDto(itemRepository.getItemById(itemId));
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new ObjectNotFoundException("Вещь с id = " + itemId + "не найдена"));
+        return ItemMapper.toItemDto(item);
     }
 
     @Override
     public List<ItemDto> getItemDtoByUserId(Long userId) {
-        userRepository.findUserById(userId);
-        return itemRepository.getItemsByUserId(userId).stream()
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
+                        "с id = " + userId + " не найден"));
+        return itemRepository.findByOwnerId(userId).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
     @Override
     public List<ItemDto> getItemsDtoByTextRequest(String text) {
-        return itemRepository.getItemsByTextRequest(text).stream()
+        if (text.equals("")) {
+            return Collections.emptyList();
+        }
+        String textToLowerCase = text.toLowerCase();
+        log.info("Получили список вещей по текстовому запросу {}", text);
+        return itemRepository.searchByText(textToLowerCase).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
