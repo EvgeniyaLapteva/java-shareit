@@ -119,7 +119,7 @@ public class BookingServiceImpl implements BookingService {
                 break;
             case UNSUPPORTED_STATUS:
                 log.warn(String.format("Внимание! Получен запрос с неизвестным статусом — %s.", state));
-                throw new ValidateStateException(state);
+                throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }
         return usersBooking.stream()
                 .map(BookingMapper::toBookingOutDto).collect(Collectors.toList());
@@ -142,7 +142,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             return BookingState.valueOf(state.toUpperCase());
         } catch (IllegalArgumentException exception) {
-            return BookingState.UNSUPPORTED_STATUS;
+            throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }
     }
 

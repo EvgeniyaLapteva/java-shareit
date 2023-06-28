@@ -12,6 +12,7 @@ import ru.practicum.shareit.exception.response.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -54,8 +55,8 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public BookingState handleValidateStateException(final ValidateStateException e) {
-        return BookingState.UNSUPPORTED_STATUS;
+    public Map<String, String> handleValidateStateException(final ValidateStateException e) {
+        return Map.of("error", e.getMessage());
     }
 
     @ResponseBody
