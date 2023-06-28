@@ -209,7 +209,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private Booking validateBooking(Long bookingId) {
-        return bookingRepository.findById(bookingId).
-                orElseThrow(() -> new ObjectNotFoundException("Бронирование с id = " + bookingId + "не найдено"));
+        return bookingRepository.findById(bookingId)
+                        .orElseThrow(() -> new ObjectNotFoundException("Бронирование с id = " + bookingId + "не найдено"));
     }
 }
