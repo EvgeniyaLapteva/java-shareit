@@ -25,11 +25,6 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleAvailableIsNullException(final FieldsAreNotSpecifiedException e) {
-        return new ErrorResponse("error", e.getMessage());
-    }
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
         return new ErrorResponse("error", e.getMessage());
     }
@@ -56,6 +51,12 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleValidateStateException(final ValidateStateException e) {
         return Map.of("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingAndCommentException(final BookingAndCommentException e) {
+        return new ErrorResponse("error", e.getMessage());
     }
 
     @ResponseBody

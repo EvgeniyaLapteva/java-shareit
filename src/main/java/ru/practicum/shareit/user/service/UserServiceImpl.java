@@ -23,6 +23,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.info("Получили список всех пользователей");
         return userRepository.findAll()
@@ -31,10 +32,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUserById(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
                 "с id = " + userId + " не найден"));
+        log.info("Получили пользователя по id = {}", userId);
         return UserMapper.toUserDto(user);
     }
 
@@ -73,6 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(Long userDtoId) {
         userRepository.deleteById(userDtoId);
+        log.info("Удалили пользователя по id = {}", userDtoId);
     }
 
     private void validateUser(UserDto userDto) {
