@@ -127,7 +127,41 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public List<BookingOutDto> findAllBookingsForItemsOfUser(Long userId, String state) {
-        return null;
+        validateUser(userId);
+        BookingState stateFromRequest = transformStringToState(state);
+        LocalDateTime now = LocalDateTime.now();
+        if (itemRepository.findByOwnerId(userId).size() == 0) {
+            throw new  ObjectNotFoundException("У пользователя нет вещей для бронирования");
+        }
+        List<Booking> bookings = new ArrayList<>();
+        switch (stateFromRequest) {
+            case ALL:
+                bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
+                break;
+            case CURRENT:
+                bookings = bookingRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(userId,
+                        now, now);
+                break;
+            case PAST:
+                bookings = bookingRepository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(userId, now);
+                break;
+            case FUTURE:
+                bookings = bookingRepository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(userId,now);
+                break;
+            case WAITING:
+                bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
+                        BookingStatus.WAITING);
+                break;
+            case REJECTED:
+                bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
+                        BookingStatus.REJECTED);
+                break;
+            case UNSUPPORTED_STATUS:
+                log.warn(String.format("Внимание! Получен запрос с неизвестным статусом — %s.", state));
+                throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
+        }
+        return bookings.stream()
+                .map(BookingMapper::toBookingOutDto).collect(Collectors.toList());
     }
 
     private void validateBookingDates(BookingDto bookingDto) {

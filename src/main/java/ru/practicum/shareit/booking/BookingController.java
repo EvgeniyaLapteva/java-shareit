@@ -45,9 +45,9 @@ public class BookingController {
     }
 
     @GetMapping("/owner")
-    public List<BookingDto> findAllBookingsForItemsOfUser(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public List<BookingOutDto> findAllBookingsForItemsOfUser(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                        @RequestParam(defaultValue = "ALL") String state) {
-        return null;
+        return bookingService.findAllBookingsForItemsOfUser(userId, state);
     }
 
 }
