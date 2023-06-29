@@ -1,6 +1,8 @@
 package ru.practicum.shareit.item.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import ru.practicum.shareit.request.ItemRequest;
 import ru.practicum.shareit.user.User;
 
@@ -9,9 +11,11 @@ import javax.persistence.*;
 /**
  * TODO Sprint add-controllers.
  */
-@Data
 @Entity
 @Table(name = "items")
+@Getter
+@Setter
+@ToString
 public class Item {
 
     @Id
@@ -29,9 +33,30 @@ public class Item {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id")
+    @ToString.Exclude
     private User owner;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
+    @ToString.Exclude
     private ItemRequest request;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (getClass() != o.getClass()) {
+            return false;
+        }
+        return id != null && id.equals(((Item) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
+    }
 }
