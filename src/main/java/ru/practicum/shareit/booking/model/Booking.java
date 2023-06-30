@@ -1,45 +1,47 @@
-package ru.practicum.shareit.item.model;
+package ru.practicum.shareit.booking.model;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import ru.practicum.shareit.request.ItemRequest;
+import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
- * TODO Sprint add-controllers.
+ * TODO Sprint add-bookings.
  */
 @Entity
-@Table(name = "items")
+@Table(name = "bookings")
 @Getter
 @Setter
 @ToString
-public class Item {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime start;
 
-    @Column(name = "description", nullable = false)
-    private String description;
-
-    @Column(name = "is_available", nullable = false)
-    private boolean available;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime end;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "owner_id")
+    @JoinColumn(name = "item_id")
     @ToString.Exclude
-    private User owner;
+    private Item item;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "booker_id")
     @ToString.Exclude
-    private ItemRequest request;
+    private User booker;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private BookingStatus status;
 
     @Override
     public boolean equals(Object o) {
@@ -52,7 +54,7 @@ public class Item {
         if (getClass() != o.getClass()) {
             return false;
         }
-        return id != null && id.equals(((Item) o).getId());
+        return id != null && id.equals(((Booking) o).getId());
     }
 
     @Override

@@ -20,7 +20,8 @@ public class ItemDaoInMemoryImpl implements ItemDao {
     @Override
     public Item createItem(Long userId, Item item) {
         item.setId(generateId());
-        User owner = User.builder().id(userId).build();
+        User owner = new User();
+        owner.setId(userId);
         item.setOwner(owner);
         usersItems.computeIfAbsent(userId, userItems -> new ArrayList<>()).add(item);
         log.info("Добавлена вещь {}", item);

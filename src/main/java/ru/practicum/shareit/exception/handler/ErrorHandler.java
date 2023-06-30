@@ -6,13 +6,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.practicum.shareit.exception.model.FieldsAreNotSpecifiedException;
-import ru.practicum.shareit.exception.model.ObjectNotFoundException;
-import ru.practicum.shareit.exception.model.ValidationException;
+import ru.practicum.shareit.exception.model.*;
 import ru.practicum.shareit.exception.response.ErrorResponse;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -26,7 +25,13 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleAvailableIsNullException(final FieldsAreNotSpecifiedException e) {
+    public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingApproveException(final BookingApproveException e) {
         return new ErrorResponse("error", e.getMessage());
     }
 
@@ -39,6 +44,18 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorResponse handleOtherException(final Throwable e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidateStateException(final ValidateStateException e) {
+        return Map.of("error", e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBookingAndCommentException(final BookingAndCommentException e) {
         return new ErrorResponse("error", e.getMessage());
     }
 
