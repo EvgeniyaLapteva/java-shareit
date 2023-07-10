@@ -11,6 +11,8 @@ import ru.practicum.shareit.item.dto.ItemDtoWithBookingAndComments;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -49,15 +51,21 @@ public class ItemController {
     }
 
     @GetMapping
-    public List<ItemDtoWithBookingAndComments> getItemsByUserId(@RequestHeader("X-Sharer-User-Id") Long userId) {
+    public List<ItemDtoWithBookingAndComments> getItemsByUserId(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                                @RequestParam(defaultValue = "0", required = false)
+                                                                @Min(0) int from, @RequestParam(defaultValue = "10",
+                                                                required = false) @Positive int size) {
         log.info("Запрос на получение списка всех вещей пользователя id = {}", userId);
-        return itemService.getItemDtoByUserId(userId);
+        return itemService.getItemDtoByUserId(userId, from, size);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getItemsByTextRequest(@RequestParam String text) {
+    public List<ItemDto> getItemsByTextRequest(@RequestParam String text,
+                                               @RequestParam(defaultValue = "0", required = false)
+                                               @Min(0) int from, @RequestParam(defaultValue = "10",
+                                                required = false) @Positive int size) {
         log.info("Запрос на поиск вещи по тексту");
-        return itemService.getItemsDtoByTextRequest(text);
+        return itemService.getItemsDtoByTextRequest(text, from, size);
     }
 
     @DeleteMapping("/{itemId}")

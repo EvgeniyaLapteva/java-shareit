@@ -10,6 +10,7 @@ import ru.practicum.shareit.request.service.ItemRequestService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -41,7 +42,7 @@ public class ItemRequestController {
     public List<ItemRequestDtoWithItems> getAllRequests(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                         @RequestParam(defaultValue = "0", required = false)
                                                         @Min(0) int from, @RequestParam(defaultValue = "10",
-                                                        required = false) @Min(1) int size) {
+                                                        required = false) @Positive int size) {
         log.info("Запрос на получение списка всех запросов на вещи постранично");
         return itemRequestService.getAllRequestsPageable(userId, from, size);
     }

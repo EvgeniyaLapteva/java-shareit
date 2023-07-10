@@ -2,6 +2,7 @@ package ru.practicum.shareit.item.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.model.Booking;
@@ -86,9 +87,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemDtoWithBookingAndComments> getItemDtoByUserId(Long userId) {
+    public List<ItemDtoWithBookingAndComments> getItemDtoByUserId(Long userId, int from, int size) {
         User user = validateUser(userId);
-        List<Item> itemsOfUser = itemRepository.findByOwnerId(userId);
+        PageRequest page = PageRequest.of(from / size, size);
+        List<Item> itemsOfUser = itemRepository.findByOwnerId(userId, page);
         List<Booking> bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
         List<Comment> comments = commentRepository.findByItemIdIn(itemsOfUser.stream()
                 .map(Item::getId).collect(Collectors.toList()));
@@ -100,12 +102,13 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<ItemDto> getItemsDtoByTextRequest(String text) {
+    public List<ItemDto> getItemsDtoByTextRequest(String text, int from, int size) {
         if (text.isBlank()) {
             return Collections.emptyList();
         }
         log.info("Получили список вещей по текстовому запросу {}", text);
-        return itemRepository.searchByText(text.toUpperCase()).stream()
+        PageRequest page = PageRequest.of(from / size, size);
+        return itemRepository.searchByText(text.toUpperCase(), page).stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
     }
 
