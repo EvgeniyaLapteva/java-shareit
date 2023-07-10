@@ -2,6 +2,7 @@ package ru.practicum.shareit.request;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ru.practicum.shareit.user.User;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @Entity
 @Table(name = "requests")
+@ToString
 public class ItemRequest {
 
     @Id
@@ -23,9 +25,11 @@ public class ItemRequest {
     @Column(name = "description")
     private String description;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "requestor_id")
+    @ToString.Exclude
     private User requestor;
-    private LocalDateTime created;
 
+    @Column(name = "created")
+    private LocalDateTime created;
 }
