@@ -91,7 +91,7 @@ public class ItemServiceImpl implements ItemService {
         User user = validateUser(userId);
         PageRequest page = PageRequest.of(from / size, size);
         List<Item> itemsOfUser = itemRepository.findByOwnerId(userId, page);
-        List<Booking> bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
+        List<Booking> bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId, page);
         List<Comment> comments = commentRepository.findByItemIdIn(itemsOfUser.stream()
                 .map(Item::getId).collect(Collectors.toList()));
         log.info("Получили список вещей пользователя id = {}", userId);

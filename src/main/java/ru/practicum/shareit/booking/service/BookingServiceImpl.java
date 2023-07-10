@@ -2,6 +2,8 @@ package ru.practicum.shareit.booking.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.BookingMapper;
@@ -102,31 +104,35 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingOutDto> findAllUsersBookingByState(Long userId, String state) {
+    public List<BookingOutDto> findAllUsersBookingByState(Long userId, String state, int from, int size) {
         validateUser(userId);
         BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
         List<Booking> usersBooking = new ArrayList<>();
+
+        Sort sort = Sort.by(Sort.Direction.DESC, "start");
+        PageRequest page = PageRequest.of(from / size, size, sort);
         switch (stateFromRequest) {
             case ALL:
-                usersBooking = bookingRepository.findByBookerIdOrderByStartDesc(userId);
+                usersBooking = bookingRepository.findByBookerIdOrderByStartDesc(userId, page);
                 break;
             case CURRENT:
                 usersBooking = bookingRepository.findByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(userId,
-                        now, now);
+                        now, now, page);
                 break;
             case PAST:
-                usersBooking = bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(userId, now);
+                usersBooking = bookingRepository.findByBookerIdAndEndIsBeforeOrderByStartDesc(userId, now, page);
                 break;
             case FUTURE:
-                usersBooking = bookingRepository.findByBookerIdAndStartIsAfterOrderByStartDesc(userId, now);
+                usersBooking = bookingRepository.findByBookerIdAndStartIsAfterOrderByStartDesc(userId, now, page);
                 break;
             case WAITING:
-                usersBooking = bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING);
+                usersBooking = bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId, BookingStatus.WAITING,
+                        page);
                 break;
             case REJECTED:
                 usersBooking = bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId,
-                        BookingStatus.REJECTED);
+                        BookingStatus.REJECTED, page);
                 break;
             case UNSUPPORTED_STATUS:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
@@ -139,7 +145,7 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingOutDto> findAllBookingsForItemsOfUser(Long userId, String state) {
+    public List<BookingOutDto> findAllBookingsForItemsOfUser(Long userId, String state, int from, int size) {
         validateUser(userId);
         BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
@@ -148,27 +154,29 @@ public class BookingServiceImpl implements BookingService {
             throw new  ObjectNotFoundException("У пользователя нет вещей для бронирования");
         }
         List<Booking> bookings = new ArrayList<>();
+        Sort sort = Sort.by(Sort.Direction.DESC, "start");
+        PageRequest page = PageRequest.of(from / size, size, sort);
         switch (stateFromRequest) {
             case ALL:
-                bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId);
+                bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId, page);
                 break;
             case CURRENT:
                 bookings = bookingRepository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(userId,
-                        now, now);
+                        now, now, page);
                 break;
             case PAST:
-                bookings = bookingRepository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(userId, now);
+                bookings = bookingRepository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(userId, now, page);
                 break;
             case FUTURE:
-                bookings = bookingRepository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(userId,now);
+                bookings = bookingRepository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(userId,now, page);
                 break;
             case WAITING:
                 bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
-                        BookingStatus.WAITING);
+                        BookingStatus.WAITING, page);
                 break;
             case REJECTED:
                 bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
-                        BookingStatus.REJECTED);
+                        BookingStatus.REJECTED, page);
                 break;
             case UNSUPPORTED_STATUS:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
