@@ -66,7 +66,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Override
     @Transactional(readOnly = true)
     public ItemRequestDtoWithItems getRequestById(Long userId, Long requestId) {
-        return null;
+        validateUser(userId);
+        ItemRequest request = itemRequestRepository.findById(requestId).orElseThrow(
+                () -> new ObjectNotFoundException("Запрос по id = " + requestId + " не найден"));
+        List<Item> items = itemRepository.findByRequestId(requestId);
+        List<ItemDto> itemDtos = items.stream()
+                .map(ItemMapper::toItemDto).collect(Collectors.toList());
+        log.info("Получен запрос на вещь по id = " + requestId);
+        return ItemRequestMapper.toItemRequestDtoWithItems(request, itemDtos);
     }
 
     private User validateUser(Long userId) {
