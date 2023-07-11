@@ -16,7 +16,7 @@ public class ItemRequestDto {
 
     private Long id;
 
-    @NotBlank(message = "Описание запрса вещи не должно быть пустым")
+    @NotBlank(message = "Описание запроса вещи не должно быть пустым")
     private String description;
 
     private User requestor;
