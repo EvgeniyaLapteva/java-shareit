@@ -29,16 +29,16 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ItemRequestServiceImpl implements ItemRequestService {
 
-    private final ItemRequestRepository itemRequestRepository;
+    private final ItemRequestRepository repository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
     @Override
     public ItemRequestDto createRequest(Long userId, ItemRequestDto itemRequestDto) {
         User requestor = validateUser(userId);
-        itemRequestDto.setRequestor(requestor);
         itemRequestDto.setCreated(LocalDateTime.now());
         ItemRequest itemRequest = ItemRequestMapper.toItemRequest(itemRequestDto);
-        itemRequestRepository.save(itemRequest);
+        itemRequest.setRequestor(requestor);
+        itemRequest = repository.save(itemRequest);
         log.info("Добавлен запрос на вещь: {}", itemRequest);
         return ItemRequestMapper.toItemRequestDto(itemRequest);
     }
@@ -47,7 +47,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Transactional(readOnly = true)
     public List<ItemRequestDtoWithItems> getRequestDtoByRequestorId(Long userId) {
         validateUser(userId);
-        List<ItemRequest> itemRequests = itemRequestRepository.findByRequestorId(userId);
+        List<ItemRequest> itemRequests = repository.findByRequestorId(userId);
         log.info("Нашли все запросы на вещи пользователя id = {}", userId);
         return addItemsToRequest(itemRequests);
     }
@@ -58,7 +58,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         validateUser(userId);
         Sort sort = Sort.by(Sort.Direction.DESC, "created");
         PageRequest page = PageRequest.of(from / size, size, sort);
-        List<ItemRequest> itemRequests = itemRequestRepository.findAllByRequestorIdNot(userId, page);
+        List<ItemRequest> itemRequests = repository.findAllByRequestorIdNot(userId, page);
         log.info("Получили список всех запросов на вещи");
         return addItemsToRequest(itemRequests);
     }
@@ -67,8 +67,8 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     @Transactional(readOnly = true)
     public ItemRequestDtoWithItems getRequestById(Long userId, Long requestId) {
         validateUser(userId);
-        ItemRequest request = itemRequestRepository.findById(requestId).orElseThrow(
-                () -> new ObjectNotFoundException("Запрос по id = " + requestId + " не найден"));
+        ItemRequest request = repository.findById(requestId).orElseThrow(() -> new ObjectNotFoundException("Запрос по " +
+                "id = " + requestId + " не найден"));
         List<Item> items = itemRepository.findByRequestId(requestId);
         List<ItemDto> itemDtos = items.stream()
                 .map(ItemMapper::toItemDto).collect(Collectors.toList());
@@ -78,8 +78,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     private User validateUser(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
-                        "с id = " + userId + " не найден"));
+                .orElseThrow(() -> new ObjectNotFoundException("Пользователь с id = " + userId + " не найден"));
     }
 
     private List<ItemRequestDtoWithItems> addItemsToRequest(List<ItemRequest> itemRequests) {
