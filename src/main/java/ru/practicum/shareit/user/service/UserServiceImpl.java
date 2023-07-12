@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
 
     @Override
     @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         log.info("Получили список всех пользователей");
-        return userRepository.findAll()
+        return repository.findAll()
                 .stream().map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
@@ -34,9 +34,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(readOnly = true)
     public UserDto getUserById(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
-                "с id = " + userId + " не найден"));
+        User user = repository.findById(userId)
+                .orElseThrow(() -> new ObjectNotFoundException("Пользователь с id = " + userId + " не найден"));
         log.info("Получили пользователя по id = {}", userId);
         return UserMapper.toUserDto(user);
     }
@@ -44,12 +43,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto create(UserDto userDto) {
         log.info("Создан пользователь {}", userDto);
-        return UserMapper.toUserDto(userRepository.save(UserMapper.toUser(userDto)));
+        return UserMapper.toUserDto(repository.save(UserMapper.toUser(userDto)));
     }
 
     @Override
     public UserDto update(Long userDtoId, UserDto userDto) {
-        User user = userRepository.findById(userDtoId)
+        User user = repository.findById(userDtoId)
                 .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
                         "с id = " + userDtoId + " не найден"));
         if (userDto.getName() != null) {
@@ -64,28 +63,15 @@ public class UserServiceImpl implements UserService {
                 log.error("Поле email не должно быть пустым");
                 throw new ValidationException("Поле email не должно быть пустым");
             }
-            if (!user.getEmail().equals(userDto.getEmail())) {
-                validateUser(userDto);
-            }
             user.setEmail(userDto.getEmail());
         }
         log.info("Обновили пользователя с id = {}", userDtoId);
-        return UserMapper.toUserDto(userRepository.save(user));
+        return UserMapper.toUserDto(repository.save(user));
     }
 
     @Override
     public void deleteUserById(Long userDtoId) {
-        userRepository.deleteById(userDtoId);
+        repository.deleteById(userDtoId);
         log.info("Удалили пользователя по id = {}", userDtoId);
-    }
-
-    private void validateUser(UserDto userDto) {
-        List<UserDto> usersFromMemory = getAllUsers();
-        for (UserDto userFM : usersFromMemory) {
-            if (userDto.getEmail().equals(userFM.getEmail())) {
-                log.error("Пользователь с email = {} уже существует", userDto.getEmail());
-                throw new ValidationException("Пользователь с email = " + userDto.getEmail() + " уже существует");
-            }
-        }
     }
 }
