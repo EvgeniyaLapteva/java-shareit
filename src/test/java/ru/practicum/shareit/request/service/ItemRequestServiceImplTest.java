@@ -65,7 +65,7 @@ class ItemRequestServiceImplTest {
         requestor.setEmail("rick@mail.ru");
 
         itemRequest = new ItemRequest();
-        itemRequest.setId(1l);
+        itemRequest.setId(1L);
         itemRequest.setDescription("need ladder");
         itemRequest.setRequestor(requestor);
         itemRequest.setCreated(LocalDateTime.now());

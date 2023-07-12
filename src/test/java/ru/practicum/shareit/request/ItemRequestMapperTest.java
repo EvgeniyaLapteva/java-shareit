@@ -16,8 +16,6 @@ class ItemRequestMapperTest {
 
     private ItemRequestDto requestDto;
 
-    private ItemRequestDtoWithItems requestDtoWithItems;
-
     @BeforeEach
     void beforeEach() {
         request = new ItemRequest();
