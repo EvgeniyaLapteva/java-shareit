@@ -3,6 +3,7 @@ package ru.practicum.shareit.request;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -39,15 +40,22 @@ class ItemRequestControllerTest {
     @MockBean
     private ItemRequestService service;
 
-    private final ItemRequestDto itemRequestDto = ItemRequestDto.builder()
-            .id(1L)
-            .description("отвертка")
-            .build();
+    private ItemRequestDto itemRequestDto;
 
-    private final ItemRequestDtoWithItems itemRequestDtoWithItems = ItemRequestDtoWithItems.builder()
-            .id(1L)
-            .description("отвертка")
-            .build();
+    private ItemRequestDtoWithItems itemRequestDtoWithItems;
+
+    @BeforeEach
+    void beforeEach() {
+        itemRequestDto = ItemRequestDto.builder()
+                .id(1L)
+                .description("отвертка")
+                .build();
+
+        itemRequestDtoWithItems = ItemRequestDtoWithItems.builder()
+                .id(1L)
+                .description("отвертка")
+                .build();
+    }
 
     @SneakyThrows
     @Test
