@@ -140,6 +140,8 @@ class BookingServiceTest {
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
                 () -> service.create(booker.getId(), bookingDto));
+
+        assertEquals(errorMessage, exception.getMessage());
         verify(repository, never())
                 .save(any());
     }
