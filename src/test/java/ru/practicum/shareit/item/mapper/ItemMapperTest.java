@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item.mapper;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.validation.annotation.Validated;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.user.User;
