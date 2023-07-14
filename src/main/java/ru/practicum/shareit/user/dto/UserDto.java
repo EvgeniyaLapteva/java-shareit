@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class UserDto {
     private Long id;
+    @NotBlank(groups = ValidationMarker.OnCreate.class, message = "Имч не может быть пустым")
     private String name;
     @Email(message = "Некорректный формат почты")
     @NotBlank(groups = ValidationMarker.OnCreate.class, message = "Поле email не может быть пустым")

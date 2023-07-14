@@ -25,5 +25,5 @@ public class ItemDto {
     @NotNull(groups = ValidationMarker.OnCreate.class, message = "Поле available не должно быть пустым")
     private Boolean available;
 
-    private Long request;
+    private Long requestId;
 }

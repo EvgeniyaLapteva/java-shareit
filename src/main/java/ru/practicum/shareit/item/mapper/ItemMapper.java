@@ -24,7 +24,7 @@ public class ItemMapper {
                 .name(item.getName())
                 .description(item.getDescription())
                 .available(item.isAvailable())
-                .request(item.getRequest() != null ? item.getRequest().getId() : null)
+                .requestId(item.getRequest() != null ? item.getRequest().getId() : null)
                 .build();
     }
 
@@ -35,9 +35,9 @@ public class ItemMapper {
         item.setDescription(itemDto.getDescription());
         item.setAvailable(itemDto.getAvailable());
         item.setOwner(owner);
-        if (itemDto.getRequest() != null) {
+        if (itemDto.getRequestId() != null) {
             ItemRequest itemRequest = new ItemRequest();
-            itemRequest.setId(itemDto.getRequest());
+            itemRequest.setId(itemDto.getRequestId());
             item.setRequest(itemRequest);
         }
         return item;
