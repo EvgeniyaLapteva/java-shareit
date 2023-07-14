@@ -169,7 +169,8 @@ class UserControllerTest {
                 .create(any());
     }
 
-    @SneakyThrows@Test
+    @SneakyThrows
+    @Test
     void shouldUpdateUserWithName() {
         when(service.update(anyLong(), any()))
                 .thenReturn(userDto);
@@ -219,7 +220,8 @@ class UserControllerTest {
                 .update(anyLong(), any());
     }
 
-    @SneakyThrows@Test
+    @SneakyThrows
+    @Test
     void shouldDeleteUserById() {
         mvc.perform(delete(URL + "/1"))
                 .andExpect(status().isOk());

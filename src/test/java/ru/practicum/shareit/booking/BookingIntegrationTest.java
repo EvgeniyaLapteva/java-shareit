@@ -28,7 +28,7 @@ public class BookingIntegrationTest {
     @Autowired
     private BookingService service;
 
-    private final LocalDateTime NOW = LocalDateTime.now();
+    private static final LocalDateTime NOW = LocalDateTime.now();
 
     private User owner;
 

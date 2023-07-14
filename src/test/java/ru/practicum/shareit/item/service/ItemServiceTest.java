@@ -225,7 +225,7 @@ class ItemServiceTest {
     void shouldGetItemsDtoByTextRequestWithEmptyText() {
         int from = 0;
         int size = 1;
-        String text ="";
+        String text = "";
 
         List<ItemDto> result = service.getItemsDtoByTextRequest(text, from, size);
 
@@ -237,7 +237,7 @@ class ItemServiceTest {
     void shouldGetItemsDtoByTextRequest() {
         int from = 0;
         int size = 1;
-        String text ="too";
+        String text = "too";
         PageRequest page = PageRequest.of(from / size, size);
         when(repository.searchByText(text.toUpperCase(), page))
                 .thenReturn(List.of(item));

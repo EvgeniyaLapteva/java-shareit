@@ -197,6 +197,7 @@ class BookingServiceTest {
         verify(repository, never())
                 .save(any());
     }
+
     @Test
     void shouldUpdateBookingStatusByOwnerWhenApproved() {
         when(userRepository.findById(anyLong()))
@@ -295,6 +296,7 @@ class BookingServiceTest {
         verify(repository, never())
                 .save(any());
     }
+
     @Test
     void shouldFindByBookingId() {
         when(userRepository.findById(owner.getId()))

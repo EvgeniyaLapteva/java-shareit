@@ -32,6 +32,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     private final ItemRequestRepository repository;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+
     @Override
     public ItemRequestDto createRequest(Long userId, ItemRequestDto itemRequestDto) {
         User requestor = validateUser(userId);
@@ -88,7 +89,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         return itemRequests.stream()
                 .map(itemRequest -> {
                     List<ItemDto> itemDtos = items.stream()
-                            .map(ItemMapper :: toItemDto)
+                            .map(ItemMapper::toItemDto)
                             .collect(Collectors.toList());
                     return ItemRequestMapper.toItemRequestDtoWithItems(itemRequest, itemDtos);
                 })
