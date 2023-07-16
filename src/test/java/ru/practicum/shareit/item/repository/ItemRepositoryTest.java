@@ -55,22 +55,22 @@ class ItemRepositoryTest {
         owner = new User();
         owner.setName("Tom");
         owner.setEmail("tom@mail.com");
-        manager.persist(owner);
+        userRepository.save(owner);
 
         requestor = new User();
         requestor.setName("Marta");
         requestor.setEmail("marta@mail.com");
-        manager.persist(requestor);
+        userRepository.save(requestor);
 
         request = new ItemRequest();
         request.setDescription("nice tool");
         request.setRequestor(requestor);
-        manager.persist(request);
+        itemRequestRepository.save(request);
 
         secondRequest = new ItemRequest();
         secondRequest.setDescription("need bike");
         secondRequest.setRequestor(requestor);
-        manager.persist(secondRequest);
+        itemRequestRepository.save(secondRequest);
 
         item = new Item();
         item.setName("tool");
@@ -78,7 +78,7 @@ class ItemRepositoryTest {
         item.setAvailable(true);
         item.setOwner(owner);
         item.setRequest(request);
-        manager.persist(item);
+        repository.save(item);
 
         secondItem = new Item();
         secondItem.setName("bike");
@@ -86,7 +86,7 @@ class ItemRepositoryTest {
         secondItem.setAvailable(true);
         secondItem.setOwner(owner);
         secondItem.setRequest(secondRequest);
-        manager.persist(secondItem);
+        repository.save(secondItem);
     }
 
     @Test
