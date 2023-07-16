@@ -14,8 +14,6 @@ import ru.practicum.shareit.user.User;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @DataJpaTest
 class ItemRequestRepositoryTest {
 
@@ -58,6 +56,11 @@ class ItemRequestRepositoryTest {
         secondRequest.setDescription("ball");
         secondRequest.setCreated(LocalDateTime.now());
         manager.persist(secondRequest);
+    }
+
+    @Test
+    public void contextLoads() {
+        Assertions.assertThat(manager).isNotNull();
     }
 
     @Test
