@@ -117,7 +117,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void ShouldSearchByTextWithoutMatches() {
+    void shouldSearchByTextWithoutMatches() {
         int from = 0;
         int size = 1;
         PageRequest page = PageRequest.of(from, size);
@@ -126,7 +126,7 @@ class ItemRepositoryTest {
                 .createQuery(QUERY, Item.class);
 
         List<Item> items = query.setParameter(1, text).getResultList();
-        List<Item>itemsFromRepository = repository.searchByText(text, page);
+        List<Item> itemsFromRepository = repository.searchByText(text, page);
 
         assertNotNull(items);
         assertEquals(0, items.size());
@@ -135,7 +135,7 @@ class ItemRepositoryTest {
     }
 
     @Test
-    void ShouldSearchByTextWithMatches() {
+    void shouldSearchByTextWithMatches() {
         int from = 0;
         int size = 2;
         PageRequest page = PageRequest.of(from, size);
