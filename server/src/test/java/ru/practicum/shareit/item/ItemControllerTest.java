@@ -105,47 +105,47 @@ class ItemControllerTest {
                 .createItemDto(anyLong(), any());
     }
 
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenCreateItemIfNameIsBlank() {
-        itemDto.setName(null);
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenCreateItemIfNameIsBlank() {
+//        itemDto.setName(null);
+//
+//        mvc.perform(post(URL)
+//                .header(HEADER, 1L)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(mapper.writeValueAsString(itemDto)))
+//                .andExpect(status().isBadRequest());
+//        verify(service, never())
+//                .createItemDto(anyLong(), any());
+//    }
 
-        mvc.perform(post(URL)
-                .header(HEADER, 1L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(itemDto)))
-                .andExpect(status().isBadRequest());
-        verify(service, never())
-                .createItemDto(anyLong(), any());
-    }
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenCreateItemIfDescriptionIsBlank() {
+//        itemDto.setDescription(null);
+//
+//        mvc.perform(post(URL)
+//                        .header(HEADER, 1L)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(mapper.writeValueAsString(itemDto)))
+//                .andExpect(status().isBadRequest());
+//        verify(service, never())
+//                .createItemDto(anyLong(), any());
+//    }
 
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenCreateItemIfDescriptionIsBlank() {
-        itemDto.setDescription(null);
-
-        mvc.perform(post(URL)
-                        .header(HEADER, 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(itemDto)))
-                .andExpect(status().isBadRequest());
-        verify(service, never())
-                .createItemDto(anyLong(), any());
-    }
-
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenCreateItemIfAvailableIsBlank() {
-        itemDto.setAvailable(null);
-
-        mvc.perform(post(URL)
-                        .header(HEADER, 1L)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(mapper.writeValueAsString(itemDto)))
-                .andExpect(status().isBadRequest());
-        verify(service, never())
-                .createItemDto(anyLong(), any());
-    }
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenCreateItemIfAvailableIsBlank() {
+//        itemDto.setAvailable(null);
+//
+//        mvc.perform(post(URL)
+//                        .header(HEADER, 1L)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                        .content(mapper.writeValueAsString(itemDto)))
+//                .andExpect(status().isBadRequest());
+//        verify(service, never())
+//                .createItemDto(anyLong(), any());
+//    }
 
     @SneakyThrows
     @Test
@@ -245,26 +245,26 @@ class ItemControllerTest {
                 .getItemDtoByUserId(anyLong(), anyInt(), anyInt());
     }
 
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenGetItemByUserIdWithWrongGParam() {
-        when(service.getItemDtoByUserId(anyLong(), anyInt(), anyInt()))
-                .thenReturn(List.of(fullItemDto));
-
-        mvc.perform(get(URL)
-                        .header(HEADER, 1L)
-                        .param("from", "-1")
-                        .param("size", "1"))
-                .andExpect(status().isBadRequest());
-
-        mvc.perform(get(URL)
-                        .header(HEADER, 1L)
-                        .param("from", "1")
-                        .param("size", "0"))
-                .andExpect(status().isBadRequest());
-        verify(service, never())
-                .getItemDtoByUserId(anyLong(), anyInt(), anyInt());
-    }
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenGetItemByUserIdWithWrongGParam() {
+//        when(service.getItemDtoByUserId(anyLong(), anyInt(), anyInt()))
+//                .thenReturn(List.of(fullItemDto));
+//
+//        mvc.perform(get(URL)
+//                        .header(HEADER, 1L)
+//                        .param("from", "-1")
+//                        .param("size", "1"))
+//                .andExpect(status().isBadRequest());
+//
+//        mvc.perform(get(URL)
+//                        .header(HEADER, 1L)
+//                        .param("from", "1")
+//                        .param("size", "0"))
+//                .andExpect(status().isBadRequest());
+//        verify(service, never())
+//                .getItemDtoByUserId(anyLong(), anyInt(), anyInt());
+//    }
 
     @SneakyThrows
     @Test
@@ -289,27 +289,27 @@ class ItemControllerTest {
                 .getItemsDtoByTextRequest(anyString(), anyInt(), anyInt());
     }
 
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenGetItemsByTextRequestWithWrongParam() {
-        when(service.getItemsDtoByTextRequest(anyString(), anyInt(), anyInt()))
-                .thenReturn(List.of(itemDto));
-
-        mvc.perform(get(URL + "/search")
-                        .param("text", "")
-                        .param("from", "-1")
-                        .param("size", "1"))
-                .andExpect(status().isBadRequest());
-
-        mvc.perform(get(URL + "/search")
-                        .param("text", "")
-                        .param("from", "1")
-                        .param("size", "0"))
-                .andExpect(
-                        status().isBadRequest());
-        verify(service, never())
-                .getItemsDtoByTextRequest(anyString(), anyInt(), anyInt());
-    }
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenGetItemsByTextRequestWithWrongParam() {
+//        when(service.getItemsDtoByTextRequest(anyString(), anyInt(), anyInt()))
+//                .thenReturn(List.of(itemDto));
+//
+//        mvc.perform(get(URL + "/search")
+//                        .param("text", "")
+//                        .param("from", "-1")
+//                        .param("size", "1"))
+//                .andExpect(status().isBadRequest());
+//
+//        mvc.perform(get(URL + "/search")
+//                        .param("text", "")
+//                        .param("from", "1")
+//                        .param("size", "0"))
+//                .andExpect(
+//                        status().isBadRequest());
+//        verify(service, never())
+//                .getItemsDtoByTextRequest(anyString(), anyInt(), anyInt());
+//    }
 
     @SneakyThrows
     @Test

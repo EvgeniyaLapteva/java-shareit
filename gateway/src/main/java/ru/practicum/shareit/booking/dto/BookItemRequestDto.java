@@ -2,7 +2,6 @@ package ru.practicum.shareit.booking.dto;
 
 import java.time.LocalDateTime;
 
-import javax.validation.constraints.Future;
 import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +15,7 @@ import lombok.*;
 public class BookItemRequestDto {
 
 	@NotNull(message = "Не указан идентификатор вещи")
-	private long itemId;
+	private Long itemId;
 
 	@NotNull(message = "Не указана дата начала бронирования")
 	@FutureOrPresent(message = "Дата начала бронирования должна быть в настоящем или будещем времени")
