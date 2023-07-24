@@ -50,6 +50,7 @@ public class ItemController {
         log.info("Запрос на добавление вещи");
         return client.updateItem(userId, itemId, itemDto);
     }
+
     @GetMapping("{itemId}")
     public ResponseEntity<Object> getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                               @PathVariable Long itemId) {
