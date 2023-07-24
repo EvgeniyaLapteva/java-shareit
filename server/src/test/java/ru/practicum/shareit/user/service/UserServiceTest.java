@@ -101,7 +101,7 @@ class UserServiceTest {
         when(repository.save(any()))
                 .thenThrow(new RuntimeException("uq_user_email"));
 
-        ValidationException e =assertThrows(ValidationException.class,
+        ValidationException e = assertThrows(ValidationException.class,
                 () -> service.create(dto));
 
         assertEquals(errorMessage, e.getMessage());
