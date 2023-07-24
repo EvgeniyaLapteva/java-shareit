@@ -199,7 +199,10 @@ class BookingControllerTest {
                 .thenReturn(List.of(bookingOutDto));
 
         mvc.perform(get(URL + "/owner")
-                .header(HEADER, 1L))
+                .header(HEADER, 1L)
+                        .param("state", "ALL")
+                        .param("from", "0")
+                        .param("size", "10"))
                 .andExpectAll(
                         status().isOk(),
                         jsonPath("$[0].id", Matchers.is(bookingOutDto.getId()), Long.class),
@@ -217,7 +220,10 @@ class BookingControllerTest {
                 .thenReturn(Collections.emptyList());
 
         mvc.perform(get(URL + "/owner")
-                        .header(HEADER, 1L))
+                        .header(HEADER, 1L)
+                .param("state", "ALL")
+                .param("from", "0")
+                .param("size", "10"))
                 .andExpectAll(
                         status().isOk(),
                         content().json("[]")

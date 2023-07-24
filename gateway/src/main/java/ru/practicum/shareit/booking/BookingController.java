@@ -63,7 +63,7 @@ public class BookingController {
 
 	@GetMapping("/owner")
 	public ResponseEntity<Object> findAllBookingsForItemsOfUser(@RequestHeader("X-Sharer-User-Id") Long userId,
-																@RequestParam(name = "stateParam", defaultValue = "all")
+																@RequestParam(name = "state", defaultValue = "ALL")
 																String stateParam, @PositiveOrZero @RequestParam(
 																name = "from", defaultValue = "0") int from, @Positive
 																@RequestParam(name = "size", defaultValue = "10")

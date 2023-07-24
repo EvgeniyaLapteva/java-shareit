@@ -102,15 +102,14 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingOutDto> findAllUsersBookingByState(Long userId, String state, int from, int size) {
+    public List<BookingOutDto> findAllUsersBookingByState(Long userId, BookingState state, int from, int size) {
         validateUser(userId);
-        BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
         List<Booking> usersBooking = new ArrayList<>();
 
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
-        switch (stateFromRequest) {
+        switch (state) {
             case ALL:
                 usersBooking = bookingRepository.findByBookerIdOrderByStartDesc(userId, page);
                 break;
@@ -143,9 +142,8 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingOutDto> findAllBookingsForItemsOfUser(Long userId, String state, int from, int size) {
+    public List<BookingOutDto> findAllBookingsForItemsOfUser(Long userId, BookingState state, int from, int size) {
         validateUser(userId);
-        BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
         if (itemRepository.findByOwnerId(userId).size() == 0) {
             log.error("У пользователя нет вещей для бронирования");
@@ -154,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
         List<Booking> bookings = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
-        switch (stateFromRequest) {
+        switch (state) {
             case ALL:
                 bookings = bookingRepository.findByItemOwnerIdOrderByStartDesc(userId, page);
                 break;
@@ -183,15 +181,6 @@ public class BookingServiceImpl implements BookingService {
         log.info("Получили список бронирований для всех вещей пользователя");
         return bookings.stream()
                 .map(BookingMapper::toBookingOutDto).collect(Collectors.toList());
-    }
-
-    private BookingState transformStringToState(String state) {
-        try {
-            return BookingState.valueOf(state.toUpperCase());
-        } catch (IllegalArgumentException exception) {
-            log.error("Получен запрос с неизвестным статусом — {}", state);
-            throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
-        }
     }
 
     private User validateUser(Long userId) {

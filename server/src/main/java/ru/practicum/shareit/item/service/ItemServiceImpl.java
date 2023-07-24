@@ -23,6 +23,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -87,6 +88,8 @@ public class ItemServiceImpl implements ItemService {
                 .map(Item::getId).collect(Collectors.toList()));
         log.info("Получили список вещей пользователя id = {}", userId);
         return itemsOfUser.stream()
+                .sorted(Comparator.comparing(Item::getId))
+                .filter(item -> item.getRequest() == null)
                 .map(item -> ItemMapper.toItemDtoWBC(item, comments, bookings, user))
                 .collect(Collectors.toList());
     }

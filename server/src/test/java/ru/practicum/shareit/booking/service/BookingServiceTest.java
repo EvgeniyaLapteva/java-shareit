@@ -338,7 +338,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdOrderByStartDesc(anyLong(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "ALL", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.ALL, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -356,7 +356,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(), any(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "CURRENT", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.CURRENT, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -373,7 +373,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "PAST", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.PAST, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -391,7 +391,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "FUTURE", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.FUTURE, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -409,7 +409,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "WAITING", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.WAITING, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -427,7 +427,7 @@ class BookingServiceTest {
         when(repository.findByBookerIdAndStatusOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, "REJECTED", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllUsersBookingByState(userId, BookingState.REJECTED, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -445,7 +445,7 @@ class BookingServiceTest {
         String errorMessage = "Unknown state: UNSUPPORTED_STATUS";
 
         ValidateStateException exception = assertThrows(ValidateStateException.class,
-                () -> service.findAllUsersBookingByState(userId, String.valueOf(BookingState.UNSUPPORTED_STATUS), FROM,
+                () -> service.findAllUsersBookingByState(userId, BookingState.UNSUPPORTED_STATUS, FROM,
                         SIZE));
 
         assertEquals(errorMessage, exception.getMessage());
@@ -459,7 +459,7 @@ class BookingServiceTest {
         String errorMessage = "Unknown state: UNSUPPORTED_STATUS";
 
         ValidateStateException exception = assertThrows(ValidateStateException.class,
-                () -> service.findAllUsersBookingByState(userId, "Unknown", FROM,
+                () -> service.findAllUsersBookingByState(userId, BookingState.UNSUPPORTED_STATUS, FROM,
                         SIZE));
 
         assertEquals(errorMessage, exception.getMessage());
@@ -476,7 +476,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdOrderByStartDesc(anyLong(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "ALL", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.ALL, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -495,7 +495,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdAndStartIsBeforeAndEndIsAfterOrderByStartDesc(anyLong(), any(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "CURRENT", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.CURRENT, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -514,7 +514,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdAndEndIsBeforeOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "PAST", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.PAST, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -533,7 +533,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdAndStartIsAfterOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "FUTURE", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.FUTURE, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -553,7 +553,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "WAITING", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.WAITING, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -573,7 +573,7 @@ class BookingServiceTest {
         when(repository.findByItemOwnerIdAndStatusOrderByStartDesc(anyLong(), any(), any()))
                 .thenReturn(List.of(booking));
 
-        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, "REJECTED", FROM, SIZE);
+        List<BookingOutDto> bookingOutDtos = service.findAllBookingsForItemsOfUser(userId, BookingState.REJECTED, FROM, SIZE);
 
         assertNotNull(bookingOutDtos);
         assertEquals(1, bookingOutDtos.size());
@@ -592,7 +592,7 @@ class BookingServiceTest {
         String errorMessage = "Unknown state: UNSUPPORTED_STATUS";
 
         ValidateStateException exception = assertThrows(ValidateStateException.class,
-                () -> service.findAllBookingsForItemsOfUser(userId, String.valueOf(BookingState.UNSUPPORTED_STATUS), FROM,
+                () -> service.findAllBookingsForItemsOfUser(userId, BookingState.UNSUPPORTED_STATUS, FROM,
                         SIZE));
 
         assertEquals(errorMessage, exception.getMessage());
@@ -608,7 +608,7 @@ class BookingServiceTest {
                 .thenThrow(new ObjectNotFoundException(errorMessage));
 
         ObjectNotFoundException exception = assertThrows(ObjectNotFoundException.class,
-                () -> service.findAllBookingsForItemsOfUser(userId, "ALL", FROM, SIZE));
+                () -> service.findAllBookingsForItemsOfUser(userId, BookingState.ALL, FROM, SIZE));
 
         assertEquals(errorMessage, exception.getMessage());
     }

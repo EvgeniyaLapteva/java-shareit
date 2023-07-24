@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
+import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -88,6 +89,22 @@ class UserServiceTest {
         );
 
         assertEquals(errorMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenCreateWithTheSameEmail() {
+        User userForCreate = new User();
+        userForCreate.setName("Markus");
+        userForCreate.setEmail("markus@email.com");
+        UserDto dto = UserMapper.toUserDto(userForCreate);
+        String errorMessage = "Пользователь с email = " + dto.getEmail() + " уже зарегистрирован";
+        when(repository.save(any()))
+                .thenThrow(new RuntimeException("uq_user_email"));
+
+        ValidationException e =assertThrows(ValidationException.class,
+                () -> service.create(dto));
+
+        assertEquals(errorMessage, e.getMessage());
     }
 
     @Test

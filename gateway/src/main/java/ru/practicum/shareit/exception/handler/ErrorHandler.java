@@ -17,23 +17,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ErrorHandler {
 
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    public ErrorResponse handleObjectNotFoundException(final ObjectNotFoundException e) {
-//        return new ErrorResponse("error", e.getMessage());
-//    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
         return new ErrorResponse("error", e.getMessage());
     }
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleBookingApproveException(final BookingApproveException e) {
-//        return new ErrorResponse("error", e.getMessage());
-//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -52,12 +40,6 @@ public class ErrorHandler {
     public Map<String, String> handleValidateStateException(final ValidateStateException e) {
         return Map.of("error", e.getMessage());
     }
-
-//    @ExceptionHandler
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleBookingAndCommentException(final BookingAndCommentException e) {
-//        return new ErrorResponse("error", e.getMessage());
-//    }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)

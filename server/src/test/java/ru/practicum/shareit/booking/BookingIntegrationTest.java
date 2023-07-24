@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.shareit.booking.dto.BookingDto;
 import ru.practicum.shareit.booking.dto.BookingOutDto;
 import ru.practicum.shareit.booking.model.Booking;
+import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.service.BookingService;
 import ru.practicum.shareit.item.model.Item;
@@ -151,42 +152,42 @@ public class BookingIntegrationTest {
 
     @Test
     void shouldGetAllBookingIfStateIsAll() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "ALL", 0, 10);
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.ALL, 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(4);
     }
 
     @Test
     void shouldGetAllBookingIfStateIsCurrent() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "CURRENT", 0, 10);
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.CURRENT, 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(2);
     }
 
     @Test
     void shouldGetAllBookingIfStateIsPast() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "Past", 0, 10);
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.PAST, 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldGetAllBookingIfStateIsFuture() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "FUTURE", 0, 10);
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.FUTURE, 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldGetAllBookingIfStateIsWaiting() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "WAITING", 0, 10);
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.WAITING, 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldGetAllBookingIfStateIsRejected() {
-        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), "REJECTED",
+        List<BookingOutDto> result = service.findAllUsersBookingByState(booker.getId(), BookingState.REJECTED,
                 0, 10);
 
         Assertions.assertThat(result).isNotEmpty().hasSize(1);
@@ -194,42 +195,42 @@ public class BookingIntegrationTest {
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsAll() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "ALL", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.ALL, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(4);
     }
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsCurrent() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "CURRENT", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.CURRENT, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(2);
     }
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsPast() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "PAST", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.PAST, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsFuture() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "FUTURE", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.FUTURE, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsWaiting() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "WAITING", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.WAITING, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(1);
     }
 
     @Test
     void shouldFindAllBookingsForItemsOfUserIfStateIsRejected() {
-        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), "REJECTED", 0, 10);
+        List<BookingOutDto> list1 = service.findAllBookingsForItemsOfUser(owner.getId(), BookingState.REJECTED, 0, 10);
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(1);
     }
