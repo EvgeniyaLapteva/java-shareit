@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.practicum.shareit.exception.model.*;
 import ru.practicum.shareit.exception.response.ErrorResponse;
 
-//import javax.validation.ConstraintViolationException;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 public class ErrorHandler {
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ErrorResponse handleObjectNotFoundException(final ObjectNotFoundException e) {
-        return new ErrorResponse("error", e.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.NOT_FOUND)
+//    public ErrorResponse handleObjectNotFoundException(final ObjectNotFoundException e) {
+//        return new ErrorResponse("error", e.getMessage());
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -29,11 +29,11 @@ public class ErrorHandler {
         return new ErrorResponse("error", e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBookingApproveException(final BookingApproveException e) {
-        return new ErrorResponse("error", e.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse handleBookingApproveException(final BookingApproveException e) {
+//        return new ErrorResponse("error", e.getMessage());
+//    }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -53,11 +53,11 @@ public class ErrorHandler {
         return Map.of("error", e.getMessage());
     }
 
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleBookingAndCommentException(final BookingAndCommentException e) {
-        return new ErrorResponse("error", e.getMessage());
-    }
+//    @ExceptionHandler
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ErrorResponse handleBookingAndCommentException(final BookingAndCommentException e) {
+//        return new ErrorResponse("error", e.getMessage());
+//    }
 
     @ResponseBody
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -69,13 +69,13 @@ public class ErrorHandler {
         return responses.get(0);
     }
 
-//    @ResponseBody
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
-//        final List<ErrorResponse> responses = e.getConstraintViolations().stream()
-//                .map(error -> new ErrorResponse(error.getPropertyPath().toString(), error.getMessage()))
-//                .collect(Collectors.toList());
-//        return responses.get(0);
-//    }
+    @ResponseBody
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleConstraintViolationException(ConstraintViolationException e) {
+        final List<ErrorResponse> responses = e.getConstraintViolations().stream()
+                .map(error -> new ErrorResponse(error.getPropertyPath().toString(), error.getMessage()))
+                .collect(Collectors.toList());
+        return responses.get(0);
+    }
 }

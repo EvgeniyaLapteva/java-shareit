@@ -42,8 +42,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto create(UserDto userDto) {
-        log.info("Создан пользователь {}", userDto);
-        return UserMapper.toUserDto(repository.save(UserMapper.toUser(userDto)));
+        User user = UserMapper.toUser(userDto);
+        User userFromDB = new User();
+        try {
+            userFromDB = repository.save(user);
+            log.info("Создан пользователь {}", userFromDB);
+        } catch (RuntimeException exception) {
+            if (exception.getMessage().contains("uq_user_email")) {
+                throw new ValidationException("Пользователь с email = " + user.getEmail() + " уже зарегистрирован");
+            }
+        }
+        return UserMapper.toUserDto(userFromDB);
     }
 
     @Override
@@ -52,17 +61,9 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
                         "с id = " + userDtoId + " не найден"));
         if (userDto.getName() != null) {
-            if (userDto.getName().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле name не должно быть пустым");
-            }
             user.setName(userDto.getName());
         }
         if (userDto.getEmail() != null) {
-            if (userDto.getEmail().isBlank()) {
-                log.error("Поле email не должно быть пустым");
-                throw new ValidationException("Поле email не должно быть пустым");
-            }
             user.setEmail(userDto.getEmail());
         }
         log.info("Обновили пользователя с id = {}", userDtoId);

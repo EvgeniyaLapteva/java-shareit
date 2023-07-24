@@ -4,15 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exception.validation.ValidationMarker;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithBookingAndComments;
 import ru.practicum.shareit.item.service.ItemService;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -28,10 +24,8 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    @Validated(ValidationMarker.OnCreate.class)
     public ItemDto createItem(@RequestHeader("X-Sharer-User-Id") Long userId,
-                              @Valid @RequestBody ItemDto itemDto) {
-        log.info("Запрос на создание вещи");
+                             @RequestBody ItemDto itemDto) {
         return itemService.createItemDto(userId, itemDto);
     }
 
@@ -39,7 +33,6 @@ public class ItemController {
     public ItemDto updateItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                               @PathVariable("itemId") Long itemId,
                               @RequestBody ItemDto itemDto) {
-        log.info("Запрос на добавление вещи");
         return itemService.updateItemDto(userId, itemId, itemDto);
     }
 
@@ -52,33 +45,26 @@ public class ItemController {
 
     @GetMapping
     public List<ItemDtoWithBookingAndComments> getItemsByUserId(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                                @RequestParam(defaultValue = "0", required = false)
-                                                                @Min(0) int from, @RequestParam(defaultValue = "10",
-                                                                required = false) @Positive int size) {
-        log.info("Запрос на получение списка всех вещей пользователя id = {}", userId);
+                                                                @RequestParam int from,
+                                                                @RequestParam int size) {
         return itemService.getItemDtoByUserId(userId, from, size);
     }
 
     @GetMapping("/search")
     public List<ItemDto> getItemsByTextRequest(@RequestParam String text,
-                                               @RequestParam(defaultValue = "0", required = false)
-                                               @Min(0) int from, @RequestParam(defaultValue = "10",
-                                                required = false) @Positive int size) {
-        log.info("Запрос на поиск вещи по тексту");
+                                               @RequestParam int from, @RequestParam int size) {
         return itemService.getItemsDtoByTextRequest(text, from, size);
     }
 
     @DeleteMapping("/{itemId}")
     public void deleteItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                            @PathVariable Long itemId) {
-        log.info("Запрос на удаление вещи по id = {}", itemId);
         itemService.deleteItemDto(userId, itemId);
     }
 
     @PostMapping("{itemId}/comment")
     public CommentDto createComment(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                    @Valid @RequestBody CommentDto commentDto, @PathVariable Long itemId) {
-        log.info("Запрос на создание комментария");
+                                    @RequestBody CommentDto commentDto, @PathVariable Long itemId) {
         return itemService.createComment(commentDto, userId, itemId);
     }
 }

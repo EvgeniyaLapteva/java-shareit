@@ -55,17 +55,9 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto updateItemDto(Long userId, Long itemId, ItemDto itemDto) {
         Item item = validateUserAndItem(userId, itemId);
         if (itemDto.getName() != null) {
-            if (itemDto.getName().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле name не должно быть пустым");
-            }
             item.setName(itemDto.getName());
         }
         if (itemDto.getDescription() != null) {
-            if (itemDto.getDescription().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле description не должно быть пустым");
-            }
             item.setDescription(itemDto.getDescription());
         }
         if (itemDto.getAvailable() != null) {

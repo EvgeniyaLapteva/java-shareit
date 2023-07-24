@@ -15,7 +15,6 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.BookingApproveException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
-import ru.practicum.shareit.exception.model.ValidateBookingsDatesException;
 import ru.practicum.shareit.exception.model.ValidateStateException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -42,7 +41,7 @@ public class BookingServiceImpl implements BookingService {
         User user = validateUser(userId);
         Long itemId = bookingDto.getItemId();
         Item item = validateItem(itemId);
-        validateBookingDates(bookingDto);
+      //  validateBookingDates(bookingDto);
         if (!item.isAvailable()) {
             log.error("Вещь с id = {} уже забронирована", itemId);
             throw new BookingApproveException("Вещь с id = " + itemId + "уже забронирована");
@@ -108,7 +107,7 @@ public class BookingServiceImpl implements BookingService {
         validateUser(userId);
         BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
-        List<Booking> usersBooking = new ArrayList<>();
+        List<Booking> usersBooking;
 
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
@@ -134,7 +133,7 @@ public class BookingServiceImpl implements BookingService {
                 usersBooking = bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED, page);
                 break;
-            case UNSUPPORTED_STATUS:
+            default:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
                 throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }
@@ -153,7 +152,7 @@ public class BookingServiceImpl implements BookingService {
             log.error("У пользователя нет вещей для бронирования");
             throw new  ObjectNotFoundException("У пользователя нет вещей для бронирования");
         }
-        List<Booking> bookings = new ArrayList<>();
+        List<Booking> bookings;
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
         switch (stateFromRequest) {
@@ -178,7 +177,7 @@ public class BookingServiceImpl implements BookingService {
                 bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED, page);
                 break;
-            case UNSUPPORTED_STATUS:
+            default:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
                 throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }
@@ -187,14 +186,14 @@ public class BookingServiceImpl implements BookingService {
                 .map(BookingMapper::toBookingOutDto).collect(Collectors.toList());
     }
 
-    private void validateBookingDates(BookingDto bookingDto) {
-        LocalDateTime start = bookingDto.getStart();
-        LocalDateTime end = bookingDto.getEnd();
-        if (!end.isAfter(start) || end.equals(start)) {
-            log.error("Проверьте даты начала и окончания бронирования");
-            throw new ValidateBookingsDatesException("Проверьте даты начала и окончания бронирования");
-        }
-    }
+//    private void validateBookingDates(BookingDto bookingDto) {
+//        LocalDateTime start = bookingDto.getStart();
+//        LocalDateTime end = bookingDto.getEnd();
+//        if (!end.isAfter(start) || end.equals(start)) {
+//            log.error("Проверьте даты начала и окончания бронирования");
+//            throw new ValidateBookingsDatesException("Проверьте даты начала и окончания бронирования");
+//        }
+//    }
 
     private BookingState transformStringToState(String state) {
         try {
