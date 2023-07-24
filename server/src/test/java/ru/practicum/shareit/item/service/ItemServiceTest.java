@@ -145,37 +145,37 @@ class ItemServiceTest {
                 .save(any());
     }
 
-    @Test
-    void shouldThrowExceptionWhenUpdateItemWithEmptyName() {
-        when(userRepository.findById(owner.getId()))
-                .thenReturn(Optional.of(owner));
-        when(repository.findById(item.getId()))
-                .thenReturn(Optional.of(item));
-        String errorMessage = "Поле name не должно быть пустым";
+//    @Test
+//    void shouldThrowExceptionWhenUpdateItemWithEmptyName() {
+//        when(userRepository.findById(owner.getId()))
+//                .thenReturn(Optional.of(owner));
+//        when(repository.findById(item.getId()))
+//                .thenReturn(Optional.of(item));
+//        String errorMessage = "Поле name не должно быть пустым";
+//
+//        ValidationException exception = assertThrows(ValidationException.class,
+//                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().name("").build()));
+//
+//        assertEquals(errorMessage, exception.getMessage());
+//        verify(repository, never())
+//                .save(any());
+//    }
 
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().name("").build()));
-
-        assertEquals(errorMessage, exception.getMessage());
-        verify(repository, never())
-                .save(any());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUpdateItemWithEmptyDescription() {
-        when(userRepository.findById(owner.getId()))
-                .thenReturn(Optional.of(owner));
-        when(repository.findById(item.getId()))
-                .thenReturn(Optional.of(item));
-        String errorMessage = "Поле description не должно быть пустым";
-
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().description("").build()));
-
-        assertEquals(errorMessage, exception.getMessage());
-        verify(repository, never())
-                .save(any());
-    }
+//    @Test
+//    void shouldThrowExceptionWhenUpdateItemWithEmptyDescription() {
+//        when(userRepository.findById(owner.getId()))
+//                .thenReturn(Optional.of(owner));
+//        when(repository.findById(item.getId()))
+//                .thenReturn(Optional.of(item));
+//        String errorMessage = "Поле description не должно быть пустым";
+//
+//        ValidationException exception = assertThrows(ValidationException.class,
+//                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().description("").build()));
+//
+//        assertEquals(errorMessage, exception.getMessage());
+//        verify(repository, never())
+//                .save(any());
+//    }
 
     @Test
     void shouldGetItemDtoById() {

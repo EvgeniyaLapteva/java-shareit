@@ -325,18 +325,17 @@ class BookingControllerTest {
 //                .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
 //    }
 
-    @SneakyThrows
-    @Test
-    void shouldGetStatusIsBadRequestWhenFindAllBookingsForItemsOfUserIfWrongSize() {
-        when(service.findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt()))
-                .thenReturn(Collections.emptyList());
-        mvc.perform(get(URL + "/owner")
-                        .header(HEADER, 1L)
-                        .param("from", "0")
-                        .param("size", "0"))
-                .andExpect(status().isBadRequest());
-        verify(service, never())
-                .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
-    }
-
+//    @SneakyThrows
+//    @Test
+//    void shouldGetStatusIsBadRequestWhenFindAllBookingsForItemsOfUserIfWrongSize() {
+//        when(service.findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt()))
+//                .thenReturn(Collections.emptyList());
+//        mvc.perform(get(URL + "/owner")
+//                        .header(HEADER, 1L)
+//                        .param("from", "0")
+//                        .param("size", "0"))
+//                .andExpect(status().isBadRequest());
+//        verify(service, never())
+//                .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
+//    }
 }

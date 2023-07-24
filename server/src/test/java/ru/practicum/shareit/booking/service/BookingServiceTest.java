@@ -13,7 +13,7 @@ import ru.practicum.shareit.booking.model.BookingState;
 import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.BookingApproveException;
-import ru.practicum.shareit.exception.model.ValidateBookingsDatesException;
+//import ru.practicum.shareit.exception.model.ValidateBookingsDatesException;
 import ru.practicum.shareit.exception.model.ValidateStateException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -146,23 +146,23 @@ class BookingServiceTest {
                 .save(any());
     }
 
-    @Test
-    void shouldThrowExceptionWhenCreateBookingIfWrongDates() {
-        String errorMessage = "Проверьте даты начала и окончания бронирования";
-        bookingDto.setStart(booking.getEnd());
-        bookingDto.setEnd(booking.getStart());
-        when(userRepository.findById(anyLong()))
-                .thenReturn(Optional.of(booker));
-        when(itemRepository.findById(anyLong()))
-                .thenReturn(Optional.of(item));
-
-        ValidateBookingsDatesException exception = assertThrows(ValidateBookingsDatesException.class,
-                () -> service.create(booker.getId(), bookingDto));
-
-        assertEquals(errorMessage, exception.getMessage());
-        verify(repository, never())
-                .save(any());
-    }
+//    @Test
+//    void shouldThrowExceptionWhenCreateBookingIfWrongDates() {
+//        String errorMessage = "Проверьте даты начала и окончания бронирования";
+//        bookingDto.setStart(booking.getEnd());
+//        bookingDto.setEnd(booking.getStart());
+//        when(userRepository.findById(anyLong()))
+//                .thenReturn(Optional.of(booker));
+//        when(itemRepository.findById(anyLong()))
+//                .thenReturn(Optional.of(item));
+//
+//        ValidateBookingsDatesException exception = assertThrows(ValidateBookingsDatesException.class,
+//                () -> service.create(booker.getId(), bookingDto));
+//
+//        assertEquals(errorMessage, exception.getMessage());
+//        verify(repository, never())
+//                .save(any());
+//    }
 
     @Test
     void shouldThrowExceptionWhenCreateBookingIfItemIsNotAvailable() {

@@ -1,7 +1,6 @@
 package ru.practicum.shareit.item;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.dto.CommentDto;
@@ -17,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/items")
 @RequiredArgsConstructor
-@Slf4j
 @Validated
 public class ItemController {
 
@@ -39,20 +37,20 @@ public class ItemController {
     @GetMapping("{itemId}")
     public ItemDtoWithBookingAndComments getItemById(@RequestHeader("X-Sharer-User-Id") Long userId,
                                                      @PathVariable Long itemId) {
-        log.info("Запрос на получение вещи по id = {}", itemId);
         return itemService.getItemDtoById(itemId, userId);
     }
 
     @GetMapping
     public List<ItemDtoWithBookingAndComments> getItemsByUserId(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                                                @RequestParam int from,
-                                                                @RequestParam int size) {
+                                                                @RequestParam(defaultValue = "0") int from,
+                                                                @RequestParam(defaultValue = "10") int size) {
         return itemService.getItemDtoByUserId(userId, from, size);
     }
 
     @GetMapping("/search")
     public List<ItemDto> getItemsByTextRequest(@RequestParam String text,
-                                               @RequestParam int from, @RequestParam int size) {
+                                               @RequestParam(defaultValue = "0") int from,
+                                               @RequestParam(defaultValue = "10") int size) {
         return itemService.getItemsDtoByTextRequest(text, from, size);
     }
 

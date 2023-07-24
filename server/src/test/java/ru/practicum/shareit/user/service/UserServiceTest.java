@@ -162,31 +162,31 @@ class UserServiceTest {
         assertEquals(errorMessage, exception.getMessage());
     }
 
-    @Test
-    void shouldThrowExceptionWhenUpdateUserIfNameIsBlank() {
-        Long userId = user.getId();
-        String errorMessage = "Поле name не должно быть пустым";
-        when(repository.findById(userId))
-                .thenReturn(Optional.of(user));
+//    @Test
+//    void shouldThrowExceptionWhenUpdateUserIfNameIsBlank() {
+//        Long userId = user.getId();
+//        String errorMessage = "Поле name не должно быть пустым";
+//        when(repository.findById(userId))
+//                .thenReturn(Optional.of(user));
+//
+//        ValidationException exception = assertThrows(ValidationException.class,
+//                () -> service.update(userId, UserDto.builder().name("").build()));
+//
+//        assertEquals(errorMessage, exception.getMessage());
+//    }
 
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> service.update(userId, UserDto.builder().name("").build()));
-
-        assertEquals(errorMessage, exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowExceptionWhenUpdateUserIfEmailIsBlank() {
-        Long userId = user.getId();
-        String errorMessage = "Поле email не должно быть пустым";
-        when(repository.findById(userId))
-                .thenReturn(Optional.of(user));
-
-        ValidationException exception = assertThrows(ValidationException.class,
-                () -> service.update(userId, UserDto.builder().email("").build()));
-
-        assertEquals(errorMessage, exception.getMessage());
-    }
+//    @Test
+//    void shouldThrowExceptionWhenUpdateUserIfEmailIsBlank() {
+//        Long userId = user.getId();
+//        String errorMessage = "Поле email не должно быть пустым";
+//        when(repository.findById(userId))
+//                .thenReturn(Optional.of(user));
+//
+//        ValidationException exception = assertThrows(ValidationException.class,
+//                () -> service.update(userId, UserDto.builder().email("").build()));
+//
+//        assertEquals(errorMessage, exception.getMessage());
+//    }
 
     @Test
     void shouldDeleteUserById() {

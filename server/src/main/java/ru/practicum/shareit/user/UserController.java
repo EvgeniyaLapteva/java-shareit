@@ -12,7 +12,6 @@ import java.util.List;
  * TODO Sprint add-controllers.
  */
 @RestController
-@Slf4j
 @RequestMapping(path = "/users")
 @RequiredArgsConstructor
 public class UserController {
@@ -41,7 +40,6 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable Long id) {
-        log.info("Запрос на удаление пользователя id = {}", id);
         userService.deleteUserById(id);
     }
 }
