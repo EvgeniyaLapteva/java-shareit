@@ -22,6 +22,7 @@ import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BookingOutDto updateBookingStatusByOwner(Long userId, Long bookingId, boolean approved) {
+    public BookingOutDto updateBookingStatusByOwner(long userId, long bookingId, boolean approved) {
         validateUser(userId);
         Booking booking = validateBooking(bookingId);
         Long itemId = booking.getItem().getId();
@@ -105,7 +106,7 @@ public class BookingServiceImpl implements BookingService {
         validateUser(userId);
         BookingState stateFromRequest = transformStringToState(state);
         LocalDateTime now = LocalDateTime.now();
-        List<Booking> usersBooking;
+        List<Booking> usersBooking = new ArrayList<>();
 
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
@@ -131,7 +132,7 @@ public class BookingServiceImpl implements BookingService {
                 usersBooking = bookingRepository.findByBookerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED, page);
                 break;
-            default:
+            case UNSUPPORTED_STATUS:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
                 throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }
@@ -150,7 +151,7 @@ public class BookingServiceImpl implements BookingService {
             log.error("У пользователя нет вещей для бронирования");
             throw new  ObjectNotFoundException("У пользователя нет вещей для бронирования");
         }
-        List<Booking> bookings;
+        List<Booking> bookings = new ArrayList<>();
         Sort sort = Sort.by(Sort.Direction.DESC, "start");
         PageRequest page = PageRequest.of(from / size, size, sort);
         switch (stateFromRequest) {
@@ -175,7 +176,7 @@ public class BookingServiceImpl implements BookingService {
                 bookings = bookingRepository.findByItemOwnerIdAndStatusOrderByStartDesc(userId,
                         BookingStatus.REJECTED, page);
                 break;
-            default:
+            case UNSUPPORTED_STATUS:
                 log.error("Получен запрос с неизвестным статусом — {}", state);
                 throw new ValidateStateException("Unknown state: UNSUPPORTED_STATUS");
         }

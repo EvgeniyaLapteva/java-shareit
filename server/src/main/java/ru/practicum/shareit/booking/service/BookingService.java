@@ -9,7 +9,7 @@ public interface BookingService {
 
     BookingOutDto create(Long userId, BookingDto bookingDto);
 
-    BookingOutDto updateBookingStatusByOwner(Long userId, Long bookingId, boolean approved);
+    BookingOutDto updateBookingStatusByOwner(long userId, long bookingId, boolean approved);
 
     BookingOutDto findByBookingId(Long userId, Long bookingId);
 
