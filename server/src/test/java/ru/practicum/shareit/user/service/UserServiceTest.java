@@ -7,7 +7,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
-import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.user.UserMapper;
 import ru.practicum.shareit.user.dto.UserDto;
@@ -161,32 +160,6 @@ class UserServiceTest {
 
         assertEquals(errorMessage, exception.getMessage());
     }
-
-//    @Test
-//    void shouldThrowExceptionWhenUpdateUserIfNameIsBlank() {
-//        Long userId = user.getId();
-//        String errorMessage = "Поле name не должно быть пустым";
-//        when(repository.findById(userId))
-//                .thenReturn(Optional.of(user));
-//
-//        ValidationException exception = assertThrows(ValidationException.class,
-//                () -> service.update(userId, UserDto.builder().name("").build()));
-//
-//        assertEquals(errorMessage, exception.getMessage());
-//    }
-
-//    @Test
-//    void shouldThrowExceptionWhenUpdateUserIfEmailIsBlank() {
-//        Long userId = user.getId();
-//        String errorMessage = "Поле email не должно быть пустым";
-//        when(repository.findById(userId))
-//                .thenReturn(Optional.of(user));
-//
-//        ValidationException exception = assertThrows(ValidationException.class,
-//                () -> service.update(userId, UserDto.builder().email("").build()));
-//
-//        assertEquals(errorMessage, exception.getMessage());
-//    }
 
     @Test
     void shouldDeleteUserById() {

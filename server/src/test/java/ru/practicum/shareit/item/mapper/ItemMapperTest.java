@@ -30,5 +30,4 @@ class ItemMapperTest {
         assertEquals(dto.getId(), item.getId());
         assertEquals(dto.getRequestId(), item.getRequest().getId());
     }
-
 }

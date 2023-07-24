@@ -233,6 +233,4 @@ public class BookingIntegrationTest {
 
         Assertions.assertThat(list1).isNotEmpty().hasSize(1);
     }
-
-
 }

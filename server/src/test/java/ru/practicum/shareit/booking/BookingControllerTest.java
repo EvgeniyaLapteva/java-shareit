@@ -100,63 +100,6 @@ class BookingControllerTest {
                 .create(anyLong(), any());
     }
 
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWithWrongStartTime() {
-//        bookingDto.setStart(LocalDateTime.of(1989, 10, 10, 10, 10));
-//
-//        mvc.perform(post(URL)
-//                .header(HEADER, 1L)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(mapper.writeValueAsString(bookingDto)))
-//                .andExpect(status().isBadRequest());
-//
-//        bookingDto.setStart(null);
-//        mvc.perform(post(URL)
-//                        .header(HEADER, 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(bookingDto)))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .create(anyLong(), any());
-//    }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWithWrongEndTime() {
-//        bookingDto.setEnd(LocalDateTime.of(1989, 10, 10, 10, 10));
-//
-//        mvc.perform(post(URL)
-//                        .header(HEADER, 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(bookingDto)))
-//                .andExpect(status().isBadRequest());
-//
-//
-//
-//        mvc.perform(post(URL)
-//                        .header(HEADER, 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(bookingDto)))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .create(anyLong(), any());
-//    }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestCreateBookingWithoutItem() {
-//        bookingDto.setItemId(null);
-//
-//        mvc.perform(post(URL)
-//                        .header(HEADER, 1L)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(bookingDto)))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .create(anyLong(), any());
-//    }
-
     @SneakyThrows
     @Test
     void shouldUpdateBookingStatusByOwnerWhenApproved() {
@@ -249,34 +192,6 @@ class BookingControllerTest {
                 .findAllUsersBookingByState(anyLong(), any(), anyInt(), anyInt());
     }
 
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWhenFindAllUsersBookingByStateIfWrongFrom() {
-//        when(service.findAllUsersBookingByState(anyLong(), any(), anyInt(), anyInt()))
-//                .thenReturn(Collections.emptyList());
-//        mvc.perform(get(URL)
-//                .header(HEADER, 1L)
-//                .param("from", "-1")
-//                .param("size", "1"))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .findAllUsersBookingByState(anyLong(), any(), anyInt(), anyInt());
-//    }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWhenFindAllUsersBookingByStateIfWrongSize() {
-//        when(service.findAllUsersBookingByState(anyLong(), any(), anyInt(), anyInt()))
-//                .thenReturn(Collections.emptyList());
-//        mvc.perform(get(URL)
-//                        .header(HEADER, 1L)
-//                        .param("from", "0")
-//                        .param("size", "0"))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .findAllUsersBookingByState(anyLong(), any(), anyInt(), anyInt());
-//    }
-
     @SneakyThrows
     @Test
     void shouldFindAllBookingsForItemsOfUser() {
@@ -310,32 +225,4 @@ class BookingControllerTest {
         verify(service, times(1))
                 .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
     }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWhenFindAllBookingsForItemsOfUserIfWrongFrom() {
-//        when(service.findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt()))
-//                .thenReturn(Collections.emptyList());
-//        mvc.perform(get(URL + "/owner")
-//                        .header(HEADER, 1L)
-//                        .param("from", "-1")
-//                        .param("size", "1"))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
-//    }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWhenFindAllBookingsForItemsOfUserIfWrongSize() {
-//        when(service.findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt()))
-//                .thenReturn(Collections.emptyList());
-//        mvc.perform(get(URL + "/owner")
-//                        .header(HEADER, 1L)
-//                        .param("from", "0")
-//                        .param("size", "0"))
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .findAllBookingsForItemsOfUser(anyLong(), any(), anyInt(), anyInt());
-//    }
 }

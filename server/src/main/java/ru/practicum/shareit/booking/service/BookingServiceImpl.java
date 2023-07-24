@@ -40,7 +40,6 @@ public class BookingServiceImpl implements BookingService {
         User user = validateUser(userId);
         Long itemId = bookingDto.getItemId();
         Item item = validateItem(itemId);
-      //  validateBookingDates(bookingDto);
         if (!item.isAvailable()) {
             log.error("Вещь с id = {} уже забронирована", itemId);
             throw new BookingApproveException("Вещь с id = " + itemId + "уже забронирована");
@@ -184,15 +183,6 @@ public class BookingServiceImpl implements BookingService {
         return bookings.stream()
                 .map(BookingMapper::toBookingOutDto).collect(Collectors.toList());
     }
-
-//    private void validateBookingDates(BookingDto bookingDto) {
-//        LocalDateTime start = bookingDto.getStart();
-//        LocalDateTime end = bookingDto.getEnd();
-//        if (!end.isAfter(start) || end.equals(start)) {
-//            log.error("Проверьте даты начала и окончания бронирования");
-//            throw new ValidateBookingsDatesException("Проверьте даты начала и окончания бронирования");
-//        }
-//    }
 
     private BookingState transformStringToState(String state) {
         try {

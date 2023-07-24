@@ -113,61 +113,6 @@ class UserControllerTest {
                 .create(any(UserDto.class));
     }
 
-//    @Test
-//    @SneakyThrows
-//    void shouldGetStatusIsBadRequestWhenCreateUserWithEmptyName() {
-//        UserDto badDto = UserDto.builder()
-//                .name("")
-//                .email("dring@mail.com")
-//                .build();
-//
-//        mvc.perform(post(URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(mapper.writeValueAsString(badDto))
-//                .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest());
-//
-//        verify(service, never())
-//                .create(any());
-//    }
-
-//    @Test
-//    @SneakyThrows
-//    void shouldGetStatusIsBadRequestWhenCreatedUserWithEmptyEmail() {
-//        UserDto badDto = UserDto.builder()
-//                .name("Tom")
-//                .email("")
-//                .build();
-//
-//        mvc.perform(post(URL)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(badDto))
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .create(any());
-//    }
-
-//    @Test
-//    @SneakyThrows
-//    void shouldGetStatusIsBadRequestWhenCreateUserWithWrongEmail() {
-//        UserDto badDto = UserDto.builder()
-//                .name("Tom")
-//                .email("tom")
-//                .build();
-//
-//        mvc.perform(post(URL)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(mapper.writeValueAsString(badDto))
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .create(any());
-//    }
-
     @SneakyThrows
     @Test
     void shouldUpdateUserWithName() {
@@ -205,19 +150,6 @@ class UserControllerTest {
         verify(service, times(1))
                 .update(anyLong(), any(UserDto.class));
     }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldGetStatusIsBadRequestWhenUpdateWithWrongEmail() {
-//        mvc.perform(patch(URL + "/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{\"email\":  \"usermail.ru\"}")
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andDo(print())
-//                .andExpect(status().isBadRequest());
-//        verify(service, never())
-//                .update(anyLong(), any());
-//    }
 
     @SneakyThrows
     @Test

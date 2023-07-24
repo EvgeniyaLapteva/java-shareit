@@ -150,47 +150,4 @@ class ItemRequestControllerTest {
         verify(service, times(1))
                 .getRequestById(anyLong(), anyLong());
     }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldCreateValidationExceptionWhenCreateWithEmptyDescription() {
-//        when(service.createRequest(anyLong(), any()))
-//                .thenReturn(itemRequestDto);
-//
-//        mvc.perform(post(URL)
-//                        .header(HEADER, 1L)
-//                        .content("{}")
-//                        .characterEncoding(StandardCharsets.UTF_8)
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .accept(MediaType.APPLICATION_JSON))
-//                .andExpectAll(
-//                        status().isBadRequest(),
-//                        content().contentType(MediaType.APPLICATION_JSON),
-//                        content().json(
-//                                "{" +
-//                                        "    \"description\": \"Описание запроса вещи не должно быть пустым\"" +
-//                                        " }")
-//                );
-//        verify(service, never())
-//                .createRequest(anyLong(), any());
-//    }
-
-//    @SneakyThrows
-//    @Test
-//    void shouldCreateValidationExceptionWhenGetAllRequestsWithWrongParam() {
-//        mvc.perform(get(URL + "/all")
-//                .header(HEADER, 1L)
-//                .param("from", "-1")
-//                .param("size", "1"))
-//                .andExpect(status().isBadRequest());
-//
-//        mvc.perform(get(URL + "/all")
-//                .header(HEADER, 1L)
-//                .param("from", "1")
-//                .param("size", "0"))
-//                .andExpect(status().isBadRequest());
-//
-//        verify(service, never())
-//                .getRequestById(anyLong(), anyLong());
-//    }
 }
