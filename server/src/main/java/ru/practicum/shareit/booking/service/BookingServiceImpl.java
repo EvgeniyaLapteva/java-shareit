@@ -15,6 +15,7 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.BookingApproveException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
+import ru.practicum.shareit.exception.model.ValidateBookingsDatesException;
 import ru.practicum.shareit.exception.model.ValidateStateException;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
@@ -41,6 +42,7 @@ public class BookingServiceImpl implements BookingService {
         User user = validateUser(userId);
         Long itemId = bookingDto.getItemId();
         Item item = validateItem(itemId);
+        validateBookingDates(bookingDto);
         if (!item.isAvailable()) {
             log.error("Вещь с id = {} уже забронирована", itemId);
             throw new BookingApproveException("Вещь с id = " + itemId + "уже забронирована");
@@ -197,5 +199,14 @@ public class BookingServiceImpl implements BookingService {
     private Booking validateBooking(Long bookingId) {
         return bookingRepository.findById(bookingId)
                         .orElseThrow(() -> new ObjectNotFoundException("Бронирование с указанным id не найдено"));
+    }
+
+    private void validateBookingDates(BookingDto bookingDto) {
+        LocalDateTime start = bookingDto.getStart();
+        LocalDateTime end = bookingDto.getEnd();
+        if (!end.isAfter(start) || end.equals(start)) {
+            log.error("Проверьте даты начала и окончания бронирования");
+            throw new ValidateBookingsDatesException("Проверьте даты начала и окончания бронирования");
+        }
     }
 }

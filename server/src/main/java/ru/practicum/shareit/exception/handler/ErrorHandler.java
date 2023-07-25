@@ -61,4 +61,10 @@ public class ErrorHandler {
                 .collect(Collectors.toList());
         return responses.get(0);
     }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
+        return new ErrorResponse("error", e.getMessage());
+    }
 }

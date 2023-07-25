@@ -18,12 +18,6 @@ import java.util.stream.Collectors;
 public class ErrorHandler {
 
     @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleValidateBookingsDateException(final ValidateBookingsDatesException e) {
-        return new ErrorResponse("error", e.getMessage());
-    }
-
-    @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ErrorResponse handleValidationException(final ValidationException e) {
         return new ErrorResponse("error", e.getMessage());
