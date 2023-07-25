@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.exception.validation.ValidationMarker;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
@@ -35,18 +34,6 @@ public class ItemController {
     public ResponseEntity<Object> updateItem(@RequestHeader("X-Sharer-User-Id") Long userId,
                               @PathVariable("itemId") Long itemId,
                               @RequestBody ItemDto itemDto) {
-        if (itemDto.getName() != null) {
-            if (itemDto.getName().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле name не должно быть пустым");
-            }
-        }
-        if (itemDto.getDescription() != null) {
-            if (itemDto.getDescription().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле description не должно быть пустым");
-            }
-        }
         log.info("Запрос на добавление вещи");
         return client.updateItem(userId, itemId, itemDto);
     }

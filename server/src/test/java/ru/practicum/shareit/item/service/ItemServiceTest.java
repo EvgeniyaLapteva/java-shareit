@@ -12,6 +12,7 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.BookingAndCommentException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
+import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithBookingAndComments;
@@ -309,6 +310,38 @@ class ItemServiceTest {
 
         assertEquals(errorMessage, exception.getMessage());
         verify(commentRepository, never())
+                .save(any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdateItemWithEmptyName() {
+        when(userRepository.findById(owner.getId()))
+                .thenReturn(Optional.of(owner));
+        when(repository.findById(item.getId()))
+                .thenReturn(Optional.of(item));
+        String errorMessage = "Поле name не должно быть пустым";
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().name("").build()));
+
+        assertEquals(errorMessage, exception.getMessage());
+        verify(repository, never())
+                .save(any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenUpdateItemWithEmptyDescription() {
+        when(userRepository.findById(owner.getId()))
+                .thenReturn(Optional.of(owner));
+        when(repository.findById(item.getId()))
+                .thenReturn(Optional.of(item));
+        String errorMessage = "Поле description не должно быть пустым";
+
+        ValidationException exception = assertThrows(ValidationException.class,
+                () -> service.updateItemDto(owner.getId(), item.getId(), ItemDto.builder().description("").build()));
+
+        assertEquals(errorMessage, exception.getMessage());
+        verify(repository, never())
                 .save(any());
     }
 }

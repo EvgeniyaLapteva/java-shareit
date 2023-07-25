@@ -41,18 +41,6 @@ public class UserController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<Object> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
-        if (userDto.getName() != null) {
-            if (userDto.getName().isBlank()) {
-                log.error("Поле name не должно быть пустым");
-                throw new ValidationException("Поле name не должно быть пустым");
-            }
-        }
-        if (userDto.getEmail() != null) {
-            if (userDto.getEmail().isBlank()) {
-                log.error("Поле email не должно быть пустым");
-                throw new ValidationException("Поле email не должно быть пустым");
-            }
-        }
         log.info("Запрос на обновление пользователя id = {}", id);
         return client.updateUser(id, userDto);
     }

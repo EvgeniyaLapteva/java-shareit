@@ -61,9 +61,17 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new ObjectNotFoundException("Пользователь" +
                         "с id = " + userDtoId + " не найден"));
         if (userDto.getName() != null) {
+            if (userDto.getName().isBlank()) {
+                log.error("Поле name не должно быть пустым");
+                throw new ValidationException("Поле name не должно быть пустым");
+            }
             user.setName(userDto.getName());
         }
         if (userDto.getEmail() != null) {
+            if (userDto.getEmail().isBlank()) {
+                log.error("Поле email не должно быть пустым");
+                throw new ValidationException("Поле email не должно быть пустым");
+            }
             user.setEmail(userDto.getEmail());
         }
         log.info("Обновили пользователя с id = {}", userDtoId);

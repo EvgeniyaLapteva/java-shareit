@@ -10,6 +10,7 @@ import ru.practicum.shareit.booking.model.BookingStatus;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.exception.model.BookingAndCommentException;
 import ru.practicum.shareit.exception.model.ObjectNotFoundException;
+import ru.practicum.shareit.exception.model.ValidationException;
 import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDtoWithBookingAndComments;
 import ru.practicum.shareit.item.mapper.CommentMapper;
@@ -55,9 +56,17 @@ public class ItemServiceImpl implements ItemService {
     public ItemDto updateItemDto(Long userId, Long itemId, ItemDto itemDto) {
         Item item = validateUserAndItem(userId, itemId);
         if (itemDto.getName() != null) {
+            if (itemDto.getName().isBlank()) {
+                log.error("Поле name не должно быть пустым");
+                throw new ValidationException("Поле name не должно быть пустым");
+            }
             item.setName(itemDto.getName());
         }
         if (itemDto.getDescription() != null) {
+            if (itemDto.getDescription().isBlank()) {
+                log.error("Поле name не должно быть пустым");
+                throw new ValidationException("Поле description не должно быть пустым");
+            }
             item.setDescription(itemDto.getDescription());
         }
         if (itemDto.getAvailable() != null) {
