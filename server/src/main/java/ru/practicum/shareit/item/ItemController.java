@@ -60,7 +60,7 @@ public class ItemController {
         itemService.deleteItemDto(userId, itemId);
     }
 
-    @PostMapping("{itemId}/comment")
+    @PostMapping("/{itemId}/comment")
     public CommentDto createComment(@RequestHeader("X-Sharer-User-Id") Long userId,
                                     @RequestBody CommentDto commentDto, @PathVariable Long itemId) {
         return itemService.createComment(commentDto, userId, itemId);
